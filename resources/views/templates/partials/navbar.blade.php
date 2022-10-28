@@ -16,15 +16,21 @@
           <li class="nav-item">
             <a href="#" class="nav-link">Dashboard</a>
           </li>
-        </li>
-      
-          <li class="nav-item">
-            <a href="#" class="nav-link">Example</a>
-          </li>
 
-        @hasanyrole('user')
-          @include('templates.partials.menu.admin')
-        @endhasanyrole
+          @hasanyrole('superadmin|admin|acc_cashier')
+          @include('templates.partials.menu.payreq')
+          @include('templates.partials.menu.accounting')
+          @endhasanyrole
+
+          @hasanyrole('superadmin|admin|acc_cashier|dnc_staff')
+          <li class="nav-item">
+            <a href="{{ route('rabs.index') }}" class="nav-link">RABs</a>
+          </li>
+          @endhasanyrole
+
+          @hasanyrole('superadmin|admin|user')
+            @include('templates.partials.menu.admin')
+          @endhasanyrole
           
         </ul>
       </div>

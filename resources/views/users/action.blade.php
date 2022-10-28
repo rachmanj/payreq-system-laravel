@@ -1,28 +1,36 @@
-<form action="{{ route('users.destroy', $model->id) }}" method="POST" id="delete-user">
-    @csrf @method('DELETE')
-</form>
-<form action="{{ route('users.activate', $model->id) }}" method="POST" id='activate-user'>
-    @csrf @method('PUT')
-</form>
-<form action="{{ route('users.deactivate', $model->id) }}" method="POST" id="deactivate-user">
-    @csrf @method('PUT')
-</form>
-<button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#edit-user-{{ $model->id }}">edit</button>
-@if ($model->is_active == 1)
-    <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-xs btn-danger" form="deactivate-user">deactivate
-    </button>
-@endif
-@if ($model->is_active == 0)
-    <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-xs btn-success" form="activate-user">
-        activate
-    </button>
-@endif
-<a href="{{ route('users.edit', $model->id) }}" class="btn btn-xs btn-info">roles</a>
-@hasanyrole('admin')
-<button class="btn btn-xs btn-danger" onclick="return confirm('Are You sure You want to delete this user?')" form='delete-user'>delete</button>
-@endhasanyrole
 
-<div class="modal fade" id="edit-user-{{ $model->id }}">
+
+
+{{-- <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#edit-user-{{ $model->id }}">edit</button> --}}
+
+@if ($model->is_active == 1)
+  <form action="{{ route('users.deactivate', $model->id) }}" method="POST">
+    @csrf @method('PUT')
+      <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-xs btn-warning">deactivate
+      </button>
+  </form>
+@endif
+
+@if ($model->is_active == 0)
+  <form action="{{ route('users.activate', $model->id) }}" method="POST">
+    @csrf @method('PUT')
+      <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-xs btn-warning">
+      activate
+      </button>
+  </form>
+@endif
+
+<a href="{{ route('users.edit', $model->id) }}" class="btn btn-xs btn-info">edit</a>
+
+<form action="{{ route('users.destroy', $model->id) }}" method="POST">
+  @csrf @method('DELETE')
+  @hasanyrole('user')
+    <button class="btn btn-xs btn-danger" type="submit" onclick="return confirm('Are You sure You want to delete this user?')">delete</button>
+  @endhasanyrole
+</form>
+
+
+{{-- <div class="modal fade" id="edit-user-{{ $model->id }}">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -58,4 +66,4 @@
         </form>
       </div> <!-- /.modal-content -->
     </div> <!-- /.modal-dialog -->
-  </div> <!-- /.modal -->
+</div> <!-- /.modal --> --}}

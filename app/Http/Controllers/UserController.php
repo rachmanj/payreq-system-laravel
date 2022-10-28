@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('users.index');
+        $projects = ['000H', '001H', '017C', '021C', '022C', '023C'];
+        $departments = Department::orderBy('department_name', 'asc')->get();
+        return view('users.index', compact(['projects', 'departments']));
     }
 
     public function create()
@@ -22,22 +25,24 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $this->validate($request, [
+        $this->validate($request, [
             'name'          => 'required|min:3|max:255',
             'username'      => 'required|min:3|max:20|unique:users',
             'password'      => 'min:6',
             'password_confirmation' => 'required_with:password|same:password|min:6'
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        $user = User::create($validatedData);
-        $user->is_active = 1;
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->project = $request->project;
+        $user->department_id = $request->department_id;
+        $user->password = Hash::make($request->password);
         $user->save();
-
         $user->assignRole('user');
 
-        return redirect()->route('users.index')->with('success', 'New User successfuly created!!');
+
+        return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     public function show($id)
@@ -47,11 +52,13 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        $projects = ['000H', '001H', '017C', '021C', '022C', '023C'];
+        $departments = Department::orderBy('department_name', 'asc')->get();
         $user = User::findOrFail($id);
         $roles = Role::all();
         $userRoles = $user->getRoleNames()->toArray();
 
-        return view('users.edit', compact(['user', 'roles', 'userRoles']));
+        return view('users.edit', compact(['user', 'roles', 'userRoles', 'projects', 'departments']));
     }
 
     public function roles_user_update(Request $request, $id)
@@ -59,21 +66,26 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($request->password) {
-            $validatedData = $this->validate($request, [
+            $this->validate($request, [
                 'name'          => 'required|min:3|max:255',
                 'password'      => 'min:6',
                 'password_confirmation' => 'required_with:password|same:password|min:6'
             ]);
 
-            $validatedData['password'] = Hash::make($validatedData['password']);
-
-            $user->update($validatedData);
+            $user->name = $request->name;
+            $user->project = $request->project;
+            $user->department_id = $request->department_id;
+            $user->password = Hash::make($request->password);
+            $user->save();
         } else {
-            $validatedData = $this->validate($request, [
+            $this->validate($request, [
                 'name'          => 'required|min:3|max:255',
             ]);
 
-            $user->update($validatedData);
+            $user->name = $request->name;
+            $user->project = $request->project;
+            $user->department_id = $request->department_id;
+            $user->save();
         }
 
         $user->syncRoles($request->role);

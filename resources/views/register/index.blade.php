@@ -20,7 +20,7 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="#"><b>Accounting</b> - <small>Library</small></a>
+    <a href="#"><b>Payreq</b> - <small>Support 9</small></a>
   </div>
 
   <div class="card">

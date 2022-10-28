@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoleSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,28 +15,28 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->insert([
-            'name' => 'user',
+        DB::table('permissions')->insert([
+            'name' => 'approve',
             'guard_name' => 'web',
         ]);
 
-        DB::table('roles')->insert([
-            'name' => 'superadmin',
+        DB::table('permissions')->insert([
+            'name' => 'outgoing',
             'guard_name' => 'web',
         ]);
 
-        DB::table('roles')->insert([
-            'name' => 'admin',
+        DB::table('permissions')->insert([
+            'name' => 'realization',
             'guard_name' => 'web',
         ]);
 
-        DB::table('roles')->insert([
-            'name' => 'acc_cashier',
+        DB::table('permissions')->insert([
+            'name' => 'verify',
             'guard_name' => 'web',
         ]);
 
-        DB::table('roles')->insert([
-            'name' => 'dnc_staff',
+        DB::table('permissions')->insert([
+            'name' => 'akses_rab',
             'guard_name' => 'web',
         ]);
     }

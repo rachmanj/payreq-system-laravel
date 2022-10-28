@@ -40,6 +40,26 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label for='project'>Project</label>
+              <select name="project" class="form-control">
+                <option value="">-- Select Project --</option>
+                @foreach ($projects as $project)
+                  <option value="{{ $project }}" {{ $project === $user->project ? 'selected' : '' }}>{{ $project }}</option>
+                @endforeach
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for='department_id'>Department</label>
+              <select name="department_id" class="form-control">
+                <option value="">-- Select Project --</option>
+                @foreach ($departments as $department)
+                  <option value="{{ $department->id }}" {{ $department->id === $user->department_id ? 'selected' : '' }}  >{{ $department->department_name }}</option>
+                @endforeach
+              </select>
+            </div>
+
             <div class="row">
               <div class="col-12">
                 <div class="form-group">

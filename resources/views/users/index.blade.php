@@ -72,6 +72,26 @@
           </div>
 
           <div class="form-group">
+            <label for='project'>Project</label>
+            <select name="project" class="form-control">
+              <option value="">-- Select Project --</option>
+              @foreach ($projects as $project)
+                <option value="{{ $project }}">{{ $project }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for='department_id'>Department</label>
+            <select name="department_id" class="form-control">
+              <option value="">-- Select Project --</option>
+              @foreach ($departments as $department)
+                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="form-group">
             <label for="password">Password</label>
             <input type="password" name='password' class="form-control">
           </div>
