@@ -13,7 +13,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Welcome to the jungle Jim ...</div>
+            <div class="card-title">Welcome to the jungle, Jim ...</div>
           </div>
         </div>
       </div>

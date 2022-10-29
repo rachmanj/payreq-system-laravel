@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('rab_id')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

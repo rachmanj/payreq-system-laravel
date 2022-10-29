@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovedController;
+use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
 use App\Http\Controllers\PermissionController;
@@ -40,6 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/', [DashboardUserController::class, 'index'])->name('index');
+        Route::get('/{id}', [DashboardUserController::class, 'show'])->name('show');
+    });
 
     Route::get('approved/data', [ApprovedController::class, 'data'])->name('approved.data');
     Route::resource('approved', ApprovedController::class);
