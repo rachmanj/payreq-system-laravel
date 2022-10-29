@@ -31,6 +31,10 @@
           @hasanyrole('superadmin|admin')
             @include('templates.partials.menu.admin')
           @endhasanyrole
+
+          <li class="nav-item">
+            <a href="{{ route('search.index') }}" class="nav-link">Search</a>
+          </li>
           
         </ul>
       </div>
