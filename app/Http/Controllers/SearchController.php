@@ -32,14 +32,15 @@ class SearchController extends Controller
 
     public function update(Request $request, $id)
     {
-        return $request->all();
-        die;
+        // return $request->all();
+        // die;
         $this->validate($request, [
-            'employee_id' => 'required',
-            // 'payreq_num' => 'required|unique:payreqs,payreq_num,' . $id,
+            'user_id' => 'required',
+            'payreq_num' => 'required|unique:payreqs,payreq_num,' . $id,
             'approve_date' => 'required',
             'payreq_type' => 'required',
             'payreq_idr' => 'required',
+            // 'realization_num' => 'unique:payreqs,realization_num,' . $id,
         ]);
 
         $payreq = Payreq::findOrFail($id);
@@ -53,6 +54,7 @@ class SearchController extends Controller
         $payreq->realization_date = $request->realization_date;
         $payreq->realization_num = $request->realization_num;
         $payreq->realization_amount = $request->realization_amount;
+        $payreq->verify_date = $request->verify_date;
         $payreq->rab_id = $request->rab_id;
         $payreq->remarks = $request->remarks;
 

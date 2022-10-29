@@ -75,9 +75,9 @@
                     <div class="form-group">
                         <label for="que_group">Priority</label>
                         <select name="que_group" id="que_group" class="form-control">
-                          <option value="1" {{ $payreq->que_group === '1' ? 'selected' : '' }}>1</option>
-                          <option value="2" {{ $payreq->que_group === '2' ? 'selected' : '' }}>2</option>
-                          <option value="3" {{ $payreq->que_group === '3' ? 'selected' : '' }}>3</option>
+                          <option value="1" {{ $payreq->que_group == '1' ? 'selected' : '' }}>1</option>
+                          <option value="2" {{ $payreq->que_group == '2' ? 'selected' : '' }}>2</option>
+                          <option value="3" {{ $payreq->que_group == '3' ? 'selected' : '' }}>3</option>
                         </select>
                       </div>
                 </div>
@@ -110,12 +110,17 @@
                     <div class="form-group">
                         <label for="realization_date">Realization Date</label>
                         <input type="date" name="realization_date" value="{{ old('realization_date', $payreq->realization_date) }}" class="form-control">
-                      </div>
+                    </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="realization_num">Realization No</label>
-                        <input type="text" name="realization_num" value="{{ old('realization_num', $payreq->realization_num) }}" class="form-control">
+                        <input type="text" name="realization_num" value="{{ old('realization_num', $payreq->realization_num) }}" class="form-control @error('realization_num') is-invalid @enderror">
+                        @error('realization_num')
+                          <div class="invalid-feedback">
+                            {{ $message }}
+                          </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-4">
@@ -127,7 +132,13 @@
              </div>
 
               <div class="row">
-                <div class="col-8">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="verify_date">Verification Date</label>
+                        <input type="date" name="verify_date" value="{{ old('verify_date', $payreq->verify_date) }}" class="form-control">
+                    </div>
+                </div>
+                <div class="col-6">
                     <div class="form-group">
                         <label for="rab_id">RAB No</label><small> Optional</small>
                         <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">
@@ -136,7 +147,7 @@
                               <option value="{{ $rab->id }}" {{ $payreq->rab_id == $rab->id ? 'selected' : '' }}>{{ $rab->rab_no }}</option>
                           @endforeach
                         </select>
-                      </div>
+                    </div>
                 </div>
               </div>
     

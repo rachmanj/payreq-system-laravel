@@ -18,7 +18,7 @@
           <div class="col-6">
             <label>Input Payreq No</label>
             <div class="input-group mb-3">
-              <input type="text" name="payreq_no" class="form-control rounded-0">
+              <input type="text" name="payreq_no" class="form-control rounded-0" autocomplete="off">
               <span class="input-group-append">
                 <button type="submit" class="btn btn-success btn-flat">Go!</button>
               </span>

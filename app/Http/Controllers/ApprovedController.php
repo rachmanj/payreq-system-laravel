@@ -69,7 +69,7 @@ class ApprovedController extends Controller
     {
         $this->validate($request, [
             'employee_id' => 'required',
-            'payreq_num' => 'required|unique:users,username,' . $id,
+            'payreq_num' => 'required|unique:payreqs,payreq_num,' . $id,
             'approve_date' => 'required',
             'payreq_type' => 'required',
             'payreq_idr' => 'required',
