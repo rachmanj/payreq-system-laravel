@@ -61,10 +61,6 @@ class VerifyController extends Controller
             $rekap->amount = $payreq->realization_amount;
             $rekap->remarks = $payreq->remarks;
             $rekap->save();
-
-            // hapus transaksi advance nya
-            $adv_rekap = Rekap::where('payreq_no', $payreq->payreq_num)->where('remarks', 'like', '%Adv%')->first();
-            $adv_rekap->delete();
         } else if ($payreq->payreq_idr < $payreq->realization_amount) {
             $variant = $payreq->realization_amount - $payreq->payreq_idr;
             if ($payreq->rab_id) {
@@ -100,9 +96,11 @@ class VerifyController extends Controller
             $rekap->amount = $payreq->realization_amount;
             $rekap->remarks = $payreq->remarks;
             $rekap->save();
+        }
 
-            // hapus transaksi advance nya
-            $adv_rekap = Rekap::where('payreq_no', $payreq->payreq_num)->where('remarks', 'like', '%Adv%')->first();
+        // hapus transaksi advance nya
+        $adv_rekap = Rekap::where('payreq_no', $payreq->payreq_num)->where('remarks', 'like', '%Adv%')->first();
+        if ($adv_rekap) {
             $adv_rekap->delete();
         }
 
