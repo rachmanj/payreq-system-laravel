@@ -35,7 +35,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="username">Username</label>
-                  <input type="text" name="username" value="{{ $user->username }}" class="form-control" disabled>
+                  <input type="text" name="username" value="{{ $user->username }}" class="form-control">
                 </div>
               </div>
             </div>

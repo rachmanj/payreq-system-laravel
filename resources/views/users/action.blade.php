@@ -20,13 +20,15 @@
   </form>
 @endif
 
+@can('edit_user')
 <a href="{{ route('users.edit', $model->id) }}" class="btn btn-xs btn-info">edit</a>
+@endcan
 
 <form action="{{ route('users.destroy', $model->id) }}" method="POST">
   @csrf @method('DELETE')
-  @hasanyrole('user')
+  @can('delete_user')
     <button class="btn btn-xs btn-danger" type="submit" onclick="return confirm('Are You sure You want to delete this user?')">delete</button>
-  @endhasanyrole
+  @endcan
 </form>
 
 

@@ -16,7 +16,7 @@ class ApprovedController extends Controller
 
     public function create()
     {
-        $employees = User::orderBy('name', 'asc')->get();
+        $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
 
         return view('approved.create', compact('employees', 'rabs'));
@@ -59,7 +59,7 @@ class ApprovedController extends Controller
     public function edit($id)
     {
         $payreq = Payreq::findOrFail($id);
-        $employees = User::orderBy('name', 'asc')->get();
+        $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
 
         return view('approved.edit', compact('payreq', 'employees', 'rabs'));

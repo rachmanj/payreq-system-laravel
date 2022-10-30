@@ -161,13 +161,17 @@
               </div>
 
               <div class="card-footer">
+                @can('search_edit')
                 <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Save</button>
+                @endcan
               </form>
               
+                @can('search_delete')
                 <form action="{{ route('search.destroy', $payreq->id) }}" method="POST">
                   @csrf @method('DELETE')
                   <button class="btn btn-sm btn-danger float-right mx-4" onclick="return confirm('Are You sure You want to delete this record?')">delete</button>
                 </form>
+                @endcan
               </div>
 
           </div>

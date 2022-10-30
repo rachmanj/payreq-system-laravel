@@ -63,6 +63,8 @@ class UserController extends Controller
 
     public function roles_user_update(Request $request, $id)
     {
+        // return 'password: ' . $request->password . ' hashed : ' . Hash::make($request->password);
+        // die;
         $user = User::findOrFail($id);
 
         if ($request->password) {
@@ -71,18 +73,18 @@ class UserController extends Controller
                 'password'      => 'min:6',
                 'password_confirmation' => 'required_with:password|same:password|min:6'
             ]);
-
+            $user->password = Hash::make($request->password);
             $user->name = $request->name;
+            $user->username = $request->username;
             $user->project = $request->project;
             $user->department_id = $request->department_id;
-            $user->password = Hash::make($request->password);
             $user->save();
         } else {
             $this->validate($request, [
                 'name'          => 'required|min:3|max:255',
             ]);
-
             $user->name = $request->name;
+            $user->username = $request->username;
             $user->project = $request->project;
             $user->department_id = $request->department_id;
             $user->save();
@@ -114,27 +116,27 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
 
-        if ($request->password) {
-            $validatedData = $this->validate($request, [
-                'name'          => 'required|min:3|max:255',
-                'password'      => 'min:6',
-                'password_confirmation' => 'required_with:password|same:password|min:6'
-            ]);
+        // if ($request->password) {
+        //     $validatedData = $this->validate($request, [
+        //         'name'          => 'required|min:3|max:255',
+        //         'password'      => 'min:6',
+        //         'password_confirmation' => 'required_with:password|same:password|min:6'
+        //     ]);
 
-            $validatedData['password'] = Hash::make($validatedData['password']);
+        //     $validatedData['password'] = Hash::make($validatedData['password']);
 
-            $user->update($validatedData);
-        } else {
-            $validatedData = $this->validate($request, [
-                'name'          => 'required|min:3|max:255',
-            ]);
+        //     $user->update($validatedData);
+        // } else {
+        //     $validatedData = $this->validate($request, [
+        //         'name'          => 'required|min:3|max:255',
+        //     ]);
 
-            $user->update($validatedData);
-        }
+        //     $user->update($validatedData);
+        // }
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        // return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     public function destroy($id)

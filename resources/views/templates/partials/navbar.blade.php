@@ -28,13 +28,15 @@
           </li>
           @endhasanyrole
 
-          @hasanyrole('superadmin|admin')
+          @can('akses_admin')
             @include('templates.partials.menu.admin')
-          @endhasanyrole
+          @endcan
 
+          @can('akses_search')
           <li class="nav-item">
             <a href="{{ route('search.index') }}" class="nav-link">Search</a>
           </li>
+          @endcan
           
         </ul>
       </div>
