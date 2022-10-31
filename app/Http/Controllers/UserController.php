@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $projects = ['000H', '001H', '017C', '021C', '022C', '023C'];
+        $projects = ['000H', '001H', '017C', '021C', '022C', '023C', 'APS'];
         $departments = Department::orderBy('department_name', 'asc')->get();
         return view('users.index', compact(['projects', 'departments']));
     }
@@ -52,7 +52,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $projects = ['000H', '001H', '017C', '021C', '022C', '023C'];
+        $projects = ['000H', '001H', '017C', '021C', '022C', '023C', 'APS'];
         $departments = Department::orderBy('department_name', 'asc')->get();
         $user = User::findOrFail($id);
         $roles = Role::all();
