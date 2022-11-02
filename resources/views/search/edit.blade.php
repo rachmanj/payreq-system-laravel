@@ -15,6 +15,7 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Edit Data</h3>
+            <a href="{{ route('search.index') }}" class="btn btn-sm btn-success float-right"><i class="fas fa-undo"></i> Back</a>
           </div>
           <div class="card-body">
             <form action="{{ route('search.update', $payreq->id) }}" method="POST">
@@ -132,13 +133,13 @@
              </div>
 
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <label for="verify_date">Verification Date</label>
                         <input type="date" name="verify_date" value="{{ old('verify_date', $payreq->verify_date) }}" class="form-control">
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <div class="form-group">
                         <label for="rab_id">RAB No</label><small> Optional</small>
                         <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">

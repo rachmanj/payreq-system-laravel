@@ -14,5 +14,6 @@
       @can('verify')
       <li><a href="{{ route('verify.index') }}" class="dropdown-item">Verification</a></li>
       @endcan
+      <li><a href="{{ route('approved.all') }}" class="dropdown-item">All</a></li>
     </ul>
   </li>

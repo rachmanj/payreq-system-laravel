@@ -48,8 +48,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [DashboardUserController::class, 'show'])->name('show');
     });
 
-    Route::get('approved/data', [ApprovedController::class, 'data'])->name('approved.data');
+    Route::prefix('approved')->name('approved.')->group(function () {
+        Route::get('/data', [ApprovedController::class, 'data'])->name('data');
+        Route::get('/all', [ApprovedController::class, 'all'])->name('all');
+        Route::get('/all/data', [ApprovedController::class, 'all_data'])->name('all.data');
+    });
     Route::resource('approved', ApprovedController::class);
+
 
     Route::prefix('realization')->name('realization.')->group(function () {
         Route::get('/data', [RealizationController::class, 'data'])->name('data');

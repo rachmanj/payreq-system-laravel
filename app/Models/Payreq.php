@@ -18,7 +18,9 @@ class Payreq extends Model
 
     public function rab()
     {
-        return $this->belongsTo(Rab::class, 'rab_id', 'id');
+        return $this->belongsTo(Rab::class, 'rab_id', 'id')->withDefault([
+            'rab_no' => 'n/a',
+        ]);
     }
 
     public function splits()

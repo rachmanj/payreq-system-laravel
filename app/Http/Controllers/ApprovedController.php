@@ -53,7 +53,9 @@ class ApprovedController extends Controller
 
     public function show($id)
     {
-        //
+        $payreq = Payreq::findOrFail($id);
+
+        return view('approved.show', compact('payreq'));
     }
 
     public function edit($id)
@@ -98,6 +100,11 @@ class ApprovedController extends Controller
         return redirect()->route('approved.index')->with('success', 'Payment Request deleted');
     }
 
+    public function all()
+    {
+        return view('approved.all');
+    }
+
     public function data()
     {
         $payreqs = Payreq::select('id', 'payreq_num', 'user_id', 'approve_date', 'payreq_type', 'payreq_idr', 'outgoing_date', 'rab_id')
@@ -125,6 +132,65 @@ class ApprovedController extends Controller
             ->addIndexColumn()
             ->addColumn('action', 'approved.action')
             ->rawColumns(['action', 'payreq_num'])
+            ->toJson();
+    }
+
+    public function all_data()
+    {
+        $payreqs = Payreq::select(
+            'id',
+            'payreq_num',
+            'user_id',
+            'approve_date',
+            'payreq_idr',
+            'outgoing_date',
+            'realization_num',
+            'realization_amount',
+            'realization_date',
+            'verify_date',
+        )
+            // ->selectRaw('datediff(now(), realization_date) as days')
+            ->orderBy('approve_date', 'desc')
+            ->get();
+
+        return datatables()->of($payreqs)
+            ->editColumn('approve_date', function ($payreq) {
+                return date('d-m-Y', strtotime($payreq->approve_date));
+            })
+            ->editColumn('outgoing_date', function ($payreq) {
+                if ($payreq->outgoing_date) {
+                    return date('d-m-Y', strtotime($payreq->outgoing_date));
+                } else {
+                    return '-';
+                }
+            })
+            ->editColumn('realization_date', function ($payreq) {
+                if ($payreq->realization_date) {
+                    return date('d-m-Y', strtotime($payreq->realization_date));
+                } else {
+                    return '-';
+                }
+            })
+            ->editColumn('verify_date', function ($payreq) {
+                if ($payreq->verify_date) {
+                    return date('d-m-Y', strtotime($payreq->verify_date));
+                } else {
+                    return '-';
+                }
+            })
+            ->editColumn('payreq_idr', function ($payreq) {
+                return number_format($payreq->payreq_idr, 0);
+            })
+            ->editColumn('realization_amount', function ($payreq) {
+                if ($payreq->realization_amount == null) return '-';
+                return number_format($payreq->realization_amount, 0);
+            })
+            ->addColumn('employee', function ($payreq) {
+                return $payreq->employee->name;
+            })
+            ->addIndexColumn()
+            ->addColumn('action', 'approved.action_all')
+            ->rawColumns(['action'])
             ->toJson();
     }
 }
