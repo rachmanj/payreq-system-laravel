@@ -5,5 +5,6 @@
       <li><a href="{{ route('rabs.index') }}" class="dropdown-item">RABs</a></li>
       <li><a href="{{ route('account.index') }}" class="dropdown-item">Accounts</a></li>
       <li><a href="{{ route('transaksi.index') }}" class="dropdown-item">Transactions</a></li>
+      <li><a href="{{ route('rekaps.index') }}" class="dropdown-item">Rekaps Tx</a></li>
     </ul>
   </li>

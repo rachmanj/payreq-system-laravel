@@ -51,16 +51,6 @@ class VerifyController extends Controller
             $transaksi->type = 'plus';
             $transaksi->amount = $variant;
             $transaksi->save();
-
-            // create new rekaps record
-            $rekap = new Rekap();
-            $rekap->posting_date = $verify_date;
-            $rekap->employee = $payreq->employee->username;
-            $rekap->payreq_no = $payreq->payreq_num;
-            $rekap->realization_no = $payreq->realization_num;
-            $rekap->amount = $payreq->realization_amount;
-            $rekap->remarks = $payreq->remarks;
-            $rekap->save();
         } else if ($payreq->payreq_idr < $payreq->realization_amount) {
             $variant = $payreq->realization_amount - $payreq->payreq_idr;
             if ($payreq->rab_id) {
@@ -86,19 +76,19 @@ class VerifyController extends Controller
             $transaksi->type = 'minus';
             $transaksi->amount = $variant;
             $transaksi->save();
-
-            // create new rekaps record
-            $rekap = new Rekap();
-            $rekap->posting_date = $verify_date;
-            $rekap->employee = $payreq->employee->username;
-            $rekap->payreq_no = $payreq->payreq_num;
-            $rekap->realization_no = $payreq->realization_num;
-            $rekap->amount = $payreq->realization_amount;
-            $rekap->remarks = $payreq->remarks;
-            $rekap->save();
         }
 
-        // hapus transaksi advance nya
+        // create new rekaps record
+        $rekap = new Rekap();
+        $rekap->posting_date = $verify_date;
+        $rekap->employee = $payreq->employee->username;
+        $rekap->payreq_no = $payreq->payreq_num;
+        $rekap->realization_no = $payreq->realization_num;
+        $rekap->amount = $payreq->realization_amount;
+        $rekap->remarks = $payreq->remarks;
+        $rekap->save();
+
+        //hapus transaksi advance nya
         $adv_rekap = Rekap::where('payreq_no', $payreq->payreq_num)->where('remarks', 'like', '%Adv%')->first();
         if ($adv_rekap) {
             $adv_rekap->delete();

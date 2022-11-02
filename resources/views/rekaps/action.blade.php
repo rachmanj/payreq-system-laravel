@@ -1,0 +1,1 @@
+<a href="{{ route('rekaps.show', $model->id) }}" class="btn btn-xs btn-warning">show</a>

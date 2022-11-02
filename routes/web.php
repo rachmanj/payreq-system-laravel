@@ -9,6 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RabController;
 use App\Http\Controllers\RealizationController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RekapController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
@@ -108,4 +109,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/transaksi-store', [AccountController::class, 'transaksi_store'])->name('transaksi_store');
     });
     Route::resource('account', AccountController::class);
+
+    Route::prefix('rekaps')->name('rekaps.')->group(function () {
+        Route::get('/data', [RekapController::class, 'data'])->name('data');
+        Route::get('/', [RekapController::class, 'index'])->name('index');
+        Route::get('/{id}', [RekapController::class, 'show'])->name('show');
+    });
 });
