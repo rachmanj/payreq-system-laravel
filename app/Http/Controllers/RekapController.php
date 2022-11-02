@@ -12,6 +12,13 @@ class RekapController extends Controller
         return view('rekaps.index');
     }
 
+    public function destroy($id)
+    {
+        $rekap = Rekap::find($id);
+        $rekap->delete();
+        return redirect()->route('rekaps.index')->with('success', 'Record berhasil dihapus');
+    }
+
     public function data()
     {
         $rekaps = Rekap::orderBy('posting_date', 'desc')->get();

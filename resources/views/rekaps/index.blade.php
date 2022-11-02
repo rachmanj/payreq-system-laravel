@@ -14,6 +14,12 @@
 
     <div class="card">
       <div class="card-header">
+        @if (Session::has('success'))
+          <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ Session::get('success') }}
+          </div>
+        @endif
         <a href="#" class="btn btn-sm btn-success">Export to Excel</a>
       </div>
       <!-- /.card-header -->
@@ -28,7 +34,7 @@
             <th>RelizNo</th>
             <th>IDR</th>
             <th>Remarks</th>
-            {{-- <th></th> --}}
+            <th></th>
           </tr>
           </thead>
         </table>
@@ -78,7 +84,7 @@
         {data: 'realization_no'},
         {data: 'amount'},
         {data: 'remarks'},
-        // {data: 'action', orderable: false, searchable: false},
+        {data: 'action', orderable: false, searchable: false},
       ],
       fixedHeader: true,
       columnDefs: [
