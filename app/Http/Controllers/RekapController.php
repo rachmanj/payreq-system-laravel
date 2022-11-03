@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapExport;
 use App\Models\Rekap;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RekapController extends Controller
 {
@@ -17,6 +19,11 @@ class RekapController extends Controller
         $rekap = Rekap::find($id);
         $rekap->delete();
         return redirect()->route('rekaps.index')->with('success', 'Record berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new RekapExport, 'rekap_tx.xlsx');
     }
 
     public function data()

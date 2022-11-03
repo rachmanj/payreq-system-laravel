@@ -20,7 +20,7 @@
             {{ Session::get('success') }}
           </div>
         @endif
-        <a href="#" class="btn btn-sm btn-success">Export to Excel</a>
+        <a href="{{ route('rekaps.export') }}" class="btn btn-sm btn-success">Export to Excel</a>
       </div>
       <!-- /.card-header -->
       <div class="card-body">

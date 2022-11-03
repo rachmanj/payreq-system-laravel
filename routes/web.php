@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('rekaps')->name('rekaps.')->group(function () {
         Route::get('/data', [RekapController::class, 'data'])->name('data');
         Route::get('/', [RekapController::class, 'index'])->name('index');
-        Route::get('/{id}', [RekapController::class, 'show'])->name('show');
         Route::delete('/{id}', [RekapController::class, 'destroy'])->name('destroy');
+        Route::get('/export', [RekapController::class, 'export'])->name('export');
     });
 });
