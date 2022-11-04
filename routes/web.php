@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovedController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
@@ -115,5 +116,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [RekapController::class, 'index'])->name('index');
         Route::delete('/{id}', [RekapController::class, 'destroy'])->name('destroy');
         Route::get('/export', [RekapController::class, 'export'])->name('export');
+    });
+
+    Route::prefix('budget')->name('budget.')->group(function () {
+        Route::get('/', [BudgetController::class, 'index'])->name('index');
+        Route::get('/data', [BudgetController::class, 'data'])->name('data');
     });
 });

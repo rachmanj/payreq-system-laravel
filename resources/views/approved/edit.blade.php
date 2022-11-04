@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="row">
-      <div class="col-8">
+      <div class="col-12">
 
         <div class="card">
           <div class="card-header">
@@ -22,7 +22,7 @@
               @csrf @method('PUT')
 
               <div class="row">
-                <div class="col-12">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="employee_id">Employee Name</label>
                     <select name="employee_id" id="employee_id" class="form-control select2bs4 @error('employee_id') is-invalid @enderror">
@@ -38,10 +38,7 @@
                     @enderror
                   </div>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="payreq_num">Payreq No</label>
                     <input type="text" name="payreq_num" value="{{ old('payreq_num', $payreq->payreq_num) }}" class="form-control @error('payreq_num') is-invalid @enderror">
@@ -52,7 +49,20 @@
                       @enderror
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="budgeted">is Budgeted?</label>
+                    <select name="budgeted" id="budgeted" class="form-control">
+                      <option value="1" {{ $payreq->budgeted == 1 ? 'selected' : '' }}>Yes</option>
+                      <option value="0" {{ $payreq->budgeted == 0 || $payreq->budgeted == null ? 'selected' : '' }}>Not yet</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                
+                <div class="col-4">
                   <div class="form-group">
                     <label for="approve_date">Approved Date</label>
                     <input type="date" name="approve_date" value="{{ old('approve_date', $payreq->approve_date) }}" class="form-control @error('approve_date') is-invalid @enderror">
@@ -63,10 +73,7 @@
                     @enderror
                   </div>
                 </div>
-              </div>
-    
-              <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="payreq_type">Type</label>
                     <select name="payreq_type" id="payreq_type" class="form-control">
@@ -75,7 +82,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="que_group">Priority</label>
                     <select name="que_group" id="que_group" class="form-control">
@@ -88,7 +95,7 @@
               </div>
               
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="payreq_idr">Amount</label>
                     <input type="text" name="payreq_idr" id="payreq_idr" value="{{ old('payreq_idr', $payreq->payreq_idr) }}" class="form-control @error('payreq_idr') is-invalid @enderror">
@@ -99,28 +106,33 @@
                     @enderror
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                   <div class="form-group">
-                    <label for="rab_id">RAB No</label><small> Optional</small>
-                    <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">
-                      <option value="">-- select RAB No --</option>
-                      @foreach ($rabs as $rab)
-                          <option value="{{ $rab->id }}" {{ $payreq->rab_id == $rab->id ? 'selected' : '' }}>{{ $rab->rab_no }}</option>
-                      @endforeach
-                    </select>
-                    @error('buc_id')
-                      <div class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                    @enderror
+                    <label for="remarks">Remarks</label>
+                    <textarea name="remarks" id="remarks" cols="30" class="form-control">{{ old('remarks', $payreq->remarks) }}</textarea>
                   </div>
                 </div>
                 </div>
               
-              <div class="form-group">
-                <label for="remarks">Remarks</label>
-                <textarea name="remarks" id="remarks" cols="30" rows="2" class="form-control">{{ old('remarks', $payreq->remarks) }}</textarea>
-              </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="rab_id">RAB No</label><small> Optional</small>
+                      <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">
+                        <option value="">-- select RAB No --</option>
+                        @foreach ($rabs as $rab)
+                            <option value="{{ $rab->id }}" {{ $payreq->rab_id == $rab->id ? 'selected' : '' }}>{{ $rab->rab_no }}</option>
+                        @endforeach
+                      </select>
+                      @error('buc_id')
+                        <div class="invalid-feedback">
+                          {{ $message }}
+                        </div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+              
             
             </form>
             </div> {{--card body --}}

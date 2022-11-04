@@ -24,6 +24,7 @@ class ApprovedController extends Controller
 
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'employee_id' => 'required',
             'payreq_num' => 'required|unique:payreqs',
@@ -36,6 +37,8 @@ class ApprovedController extends Controller
             $approve_date = date('Y-m-d');
         }
 
+
+
         $payreq = new Payreq();
         $payreq->user_id = $request->employee_id;
         $payreq->payreq_num = $request->payreq_num;
@@ -46,6 +49,7 @@ class ApprovedController extends Controller
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->remarks = $request->remarks;
         $payreq->created_by = auth()->user()->username;
+        $payreq->budgeted = $request->budgeted;
         $payreq->save();
 
         return redirect()->route('approved.index')->with('success', 'Payment Request created');
@@ -87,6 +91,7 @@ class ApprovedController extends Controller
         $payreq->remarks = $request->remarks;
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->updated_by = auth()->user()->username;
+        $payreq->budgeted = $request->budgeted;
         $payreq->save();
 
         return redirect()->route('approved.index')->with('success', 'Payment Request updated');

@@ -22,7 +22,7 @@
               @csrf
 
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="employee_id">Employee Name</label>
                     <select name="employee_id" id="employee_id" class="form-control select2bs4 @error('employee_id') is-invalid @enderror">
@@ -38,7 +38,7 @@
                     @enderror
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="payreq_num">Payreq No</label>
                     <input type="text" name="payreq_num" value="{{ old('payreq_num') }}" class="form-control @error('payreq_num') is-invalid @enderror" autocomplete="off">
@@ -47,6 +47,15 @@
                         {{ $message }}
                       </div>
                       @enderror
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="budgeted">is Budgeted?</label>
+                    <select name="budgeted" id="budgeted" class="form-control">
+                      <option value="1">Yes</option>
+                      <option value="0">Not yet</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -85,7 +94,7 @@
               </div>
 
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="payreq_idr">Amount</label>
                     <input type="text" name="payreq_idr" id="payreq_idr" value="{{ old('payreq_idr') }}" class="form-control @error('payreq_idr') is-invalid @enderror">
@@ -96,10 +105,10 @@
                     @enderror
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                   <div class="form-group">
                     <label for="remarks">Remarks</label>
-                    <textarea name="remarks" id="remarks" cols="30" rows="1" class="form-control">{{ old('remarks') }}</textarea>
+                    <textarea name="remarks" id="remarks" cols="30" rows="2" class="form-control">{{ old('remarks') }}</textarea>
                   </div>
                 </div>
               </div>
