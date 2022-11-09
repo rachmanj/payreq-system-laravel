@@ -56,6 +56,7 @@ class SearchController extends Controller
         $payreq->realization_amount = $request->realization_amount;
         $payreq->verify_date = $request->verify_date;
         $payreq->rab_id = $request->rab_id;
+        $payreq->budgeted = $request->budgeted;
         $payreq->remarks = $request->remarks;
 
         $payreq->save();

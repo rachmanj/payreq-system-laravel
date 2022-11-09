@@ -64,7 +64,7 @@ class OutgoingController extends Controller
         $rekap->employee = $payreq->employee->username;
         $rekap->payreq_no = $payreq->payreq_num;
         $rekap->amount = $payreq->payreq_idr;
-        $rekap->remarks = $payreq->payreq_type == 'Advance' ? 'Adv ' . $description : $description;
+        $rekap->remarks = $payreq->payreq_type == 'Advance' ? 'Adv ' . $payreq->remarks : $payreq->remarks;
 
         // save all
         $account->save();
