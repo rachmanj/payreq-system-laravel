@@ -102,7 +102,15 @@
                         <input type="date" name="outgoing_date" value="{{ old('outgoing_date', $payreq->outgoing_date) }}" class="form-control">
                       </div>
                 </div>
-                <div class="col-4"></div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="budgeted">is Budgeted?</label>
+                    <select name="budgeted" id="budgeted" class="form-control">
+                      <option value="1">Yes</option>
+                      <option value="0">Not yet</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="col-4"></div>
               </div>
     
