@@ -20,7 +20,7 @@
             {{ Session::get('success') }}
           </div>
         @endif
-        <h6><b>Index</b> | <a href="{{ route('budget.just_updated') }}">Just Updated</a></h6>
+        <h6><a href="{{ route('budget.index') }}">Index</a> | <b>Just Updated</b></h6>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -30,11 +30,11 @@
             <th>#</th>
             <th>Name</th>
             <th>Payreq No</th>
-            {{-- <th>Type</th> --}}
             <th>Apprv Date</th>
             <th>IDR</th>
+            <th>OFR</th>
             <th>Remarks</th>
-            <th></th>
+            {{-- <th></th> --}}
           </tr>
           </thead>
         </table>
@@ -75,16 +75,16 @@
     $("#budgets").DataTable({
       processing: true,
       serverSide: true,
-      ajax: '{{ route('budget.data') }}',
+      ajax: '{{ route('budget.just_updated_data') }}',
       columns: [
         {data: 'DT_RowIndex', orderable: false, searchable: false},
         {data: 'employee'},
         {data: 'payreq_num'},
-        // {data: 'payreq_type'},
         {data: 'approve_date'},
         {data: 'payreq_idr'},
+        {data: 'periode_ofr'},
         {data: 'remarks'},
-        {data: 'action', orderable: false, searchable: false},
+        // {data: 'action', orderable: false, searchable: false},
       ],
       fixedHeader: true,
       columnDefs: [

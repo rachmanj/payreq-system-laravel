@@ -68,8 +68,18 @@
                         <input type="text" name="outgoing_date" value="{{ $payreq->outgoing_date ? date('d-m-Y', strtotime($payreq->approve_date)) : '-'  }}" class="form-control" disabled>
                       </div>
                 </div>
-                <div class="col-4"></div>
-                <div class="col-4"></div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="budgeted">is Budgeted?</label>
+                    <input type="text" name="outgoing_date" value="{{ $payreq->budgeted == 1 ? 'Yes' : 'Not Yet' }}" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="periode_ofr">Periode OFR</label>
+                    <input type="text" name="periode_ofr" value="{{ $payreq->periode_ofr ? date('d-m-Y', strtotime($payreq->periode_ofr)) : '-' }}" class="form-control" disabled>
+                  </div>
+                </div>
               </div>
     
              <div class="row">

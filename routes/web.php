@@ -120,6 +120,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('budget')->name('budget.')->group(function () {
         Route::get('/', [BudgetController::class, 'index'])->name('index');
+        Route::get('/just_updated', [BudgetController::class, 'just_updated'])->name('just_updated');
+        Route::put('/{id}', [BudgetController::class, 'update'])->name('update');
         Route::get('/data', [BudgetController::class, 'data'])->name('data');
+        Route::get('/just_updated/data', [BudgetController::class, 'just_updated_data'])->name('just_updated_data');
     });
 });

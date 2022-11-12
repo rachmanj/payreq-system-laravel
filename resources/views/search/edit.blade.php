@@ -98,20 +98,25 @@
               <div class="row">
                 <div class="col-4">
                     <div class="form-group">
-                        <label for="outgoing_date">Outgoing Date</label>
-                        <input type="date" name="outgoing_date" value="{{ old('outgoing_date', $payreq->outgoing_date) }}" class="form-control">
-                      </div>
+                      <label for="outgoing_date">Outgoing Date</label>
+                      <input type="date" name="outgoing_date" value="{{ old('outgoing_date', $payreq->outgoing_date) }}" class="form-control">
+                    </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group">
                     <label for="budgeted">is Budgeted?</label>
                     <select name="budgeted" id="budgeted" class="form-control">
-                      <option value="1">Yes</option>
-                      <option value="0">Not yet</option>
+                      <option value="1" {{ $payreq->budgeted == 1 ? 'selected' : '' }}>Yes</option>
+                      <option value="0" {{ $payreq->budgeted == 0 ? 'selected' : '' }}>Not yet</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-4"></div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="periode_ofr">Periode OFR</label>
+                    <input type="date" name="periode_ofr" value="{{ old('periode_ofr', $payreq->periode_ofr) }}" class="form-control">
+                  </div>
+                </div>
               </div>
     
              <div class="row">
