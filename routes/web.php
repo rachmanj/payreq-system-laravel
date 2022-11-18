@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\DashboardAccountingController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\RabController;
 use App\Http\Controllers\RealizationController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RekapController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TransaksiController;
@@ -79,15 +79,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [VerifyController::class, 'update'])->name('update');
     });
 
-    // Route::prefix('reports')->name('reports.')->group(function () {
-    //     Route::get('/', [ReportController::class, 'index'])->name('index');
-    //     Route::get('/report1', [ReportController::class, 'report1_index'])->name('report1.index');
-    //     Route::get('/report1/{id}/edit', [ReportController::class, 'report1_edit'])->name('report1.edit');
-    //     Route::put('/report1/{id}', [ReportController::class, 'report1_update'])->name('report1.update');
-    //     Route::delete('/report1/{id}', [ReportController::class, 'report1_destroy'])->name('report1.destroy');
-    //     Route::post('/report1/display', [ReportController::class, 'report1_display'])->name('report1.display');
-    // });
-
     Route::prefix('search')->name('search.')->group(function () {
         Route::get('/', [SearchController::class, 'index'])->name('index');
         Route::post('/display', [SearchController::class, 'display'])->name('display');
@@ -124,5 +115,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [BudgetController::class, 'update'])->name('update');
         Route::get('/data', [BudgetController::class, 'data'])->name('data');
         Route::get('/just_updated/data', [BudgetController::class, 'just_updated_data'])->name('just_updated_data');
+    });
+
+    Route::prefix('acc-dashboard')->name('acc-dashboard.')->group(function () {
+        Route::get('/', [DashboardAccountingController::class, 'index'])->name('index');
+        Route::get('test', [DashboardAccountingController::class, 'test'])->name('test');
     });
 });
