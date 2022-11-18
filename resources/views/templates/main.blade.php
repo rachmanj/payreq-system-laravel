@@ -6,6 +6,7 @@
 <div class="wrapper">
 
   @include('templates.partials.navbar')
+  @include('sweetalert::alert')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

@@ -24,7 +24,6 @@ class ApprovedController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'employee_id' => 'required',
             'payreq_num' => 'required|unique:payreqs',
@@ -36,8 +35,6 @@ class ApprovedController extends Controller
         } else {
             $approve_date = date('Y-m-d');
         }
-
-
 
         $payreq = new Payreq();
         $payreq->user_id = $request->employee_id;

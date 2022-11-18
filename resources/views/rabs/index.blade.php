@@ -14,18 +14,7 @@
 
     <div class="card">
       <div class="card-header">
-        @if (Session::has('success'))
-          <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('success') }}
-          </div>
-        @endif
-        @if (Session::has('error'))
-          <div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('error') }}
-          </div>
-        @endif
+
         @hasanyrole('superadmin|admin_accounting|cashier')
         <button href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create"><i class="fas fa-plus"></i> RAB</button>
         @endhasanyrole

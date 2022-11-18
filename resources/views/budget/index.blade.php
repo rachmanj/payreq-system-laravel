@@ -14,12 +14,12 @@
 
     <div class="card">
       <div class="card-header">
-        @if (Session::has('success'))
+        {{-- @if (Session::has('success'))
           <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             {{ Session::get('success') }}
           </div>
-        @endif
+        @endif --}}
         <h6><b>Index</b> | <a href="{{ route('budget.just_updated') }}">Just Updated</a></h6>
       </div>
       <!-- /.card-header -->

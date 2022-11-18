@@ -14,18 +14,6 @@
 
     <div class="card">
       <div class="card-header">
-        @if (Session::has('success'))
-          <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('success') }}
-          </div>
-        @endif
-        @if (Session::has('error'))
-          <div class="alert alert-error alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('error') }}
-          </div>
-        @endif
         <button href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create"><i class="fas fa-plus"></i> Account</button>
         <button href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#transaksi-create"><i class="fas fa-plus"></i> Transaksi</button>
       </div>  <!-- /.card-header -->
