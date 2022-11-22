@@ -117,6 +117,17 @@
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
+                      <label for="adv_category_code">Adv Category</label>
+                      <select name="adv_category_code" id="adv_category_code" class="form-control">
+                        <option value="">-- select adv category code --</option>
+                        @foreach ($adv_categories as $category)
+                          <option value="{{ $category->code }}" {{ $payreq->adv_category_code === $category->code ? 'selected' : '' }}>{{ $category->code . ' - ' . $category->description }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
                       <label for="rab_id">RAB No</label><small> Optional</small>
                       <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">
                         <option value="">-- select RAB No --</option>

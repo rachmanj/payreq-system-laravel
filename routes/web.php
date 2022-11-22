@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdvanceCategoryController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardAccountingController;
@@ -116,6 +117,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/data', [BudgetController::class, 'data'])->name('data');
         Route::get('/just_updated/data', [BudgetController::class, 'just_updated_data'])->name('just_updated_data');
     });
+
+    Route::get('adv-category/data', [AdvanceCategoryController::class, 'data'])->name('adv-category.data');
+    Route::resource('adv-category', AdvanceCategoryController::class);
 
     Route::prefix('acc-dashboard')->name('acc-dashboard.')->group(function () {
         Route::get('/', [DashboardAccountingController::class, 'index'])->name('index');

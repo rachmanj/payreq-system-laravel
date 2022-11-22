@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdvanceCategory;
 use App\Models\Payreq;
 use App\Models\Rab;
 use App\Models\User;
@@ -18,8 +19,9 @@ class ApprovedController extends Controller
     {
         $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
+        $adv_categories = AdvanceCategory::orderBy('code', 'asc')->get();
 
-        return view('approved.create', compact('employees', 'rabs'));
+        return view('approved.create', compact('employees', 'rabs', 'adv_categories'));
     }
 
     public function store(Request $request)
@@ -43,6 +45,7 @@ class ApprovedController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
+        $payreq->adv_category_code = $request->adv_category_code;
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->remarks = $request->remarks;
         $payreq->created_by = auth()->user()->username;
@@ -64,8 +67,9 @@ class ApprovedController extends Controller
         $payreq = Payreq::findOrFail($id);
         $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
+        $adv_categories = AdvanceCategory::orderBy('code', 'asc')->get();
 
-        return view('approved.edit', compact('payreq', 'employees', 'rabs'));
+        return view('approved.edit', compact('payreq', 'employees', 'rabs', 'adv_categories'));
     }
 
     public function update(Request $request, $id)
@@ -85,6 +89,7 @@ class ApprovedController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
+        $payreq->adv_category_code = $request->adv_category_code;
         $payreq->remarks = $request->remarks;
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->updated_by = auth()->user()->username;

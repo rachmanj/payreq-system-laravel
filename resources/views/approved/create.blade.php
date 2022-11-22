@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="row">
-      <div class="col-10">
+      <div class="col-12">
 
         <div class="card">
           <div class="card-header">
@@ -116,6 +116,17 @@
               <div class="row">
                 <div class="col-6">
                   <div class="form-group">
+                    <label for="adv_category_code">Adv Category</label>
+                    <select name="adv_category_code" id="adv_category_code" class="form-control">
+                      <option value="">-- select adv category code --</option>
+                      @foreach ($adv_categories as $category)
+                        <option value="{{ $category->code }}">{{ $category->code . ' - ' . $category->description }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
                     <label for="rab_id">RAB No</label><small> (Pilih RAB No jika merupakan payreq utk RAB)</small>
                     <select name="rab_id" id="rab_id" class="form-control select2bs4 @error('rab_id') is-invalid @enderror">
                       <option value="">-- select RAB No --</option>
@@ -129,9 +140,6 @@
                       </div>
                     @enderror
                   </div>
-                </div>
-                <div class="col-6">
-                  {{--  --}}
                 </div>
               </div>
 

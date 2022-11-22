@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdvanceCategory;
 use App\Models\Payreq;
 use App\Models\Rab;
 use App\Models\User;
@@ -26,8 +27,9 @@ class SearchController extends Controller
         $payreq = Payreq::find($id);
         $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
+        $adv_categories = AdvanceCategory::orderBy('code', 'asc')->get();
 
-        return view('search.edit', compact('payreq', 'employees', 'rabs'));
+        return view('search.edit', compact('payreq', 'employees', 'rabs', 'adv_categories'));
     }
 
     public function update(Request $request, $id)
@@ -50,6 +52,7 @@ class SearchController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
+        $payreq->adv_category_code = $request->adv_category_code;
         $payreq->outgoing_date = $request->outgoing_date;
         $payreq->realization_date = $request->realization_date;
         $payreq->realization_num = $request->realization_num;
@@ -67,7 +70,6 @@ class SearchController extends Controller
         $payreq->remarks = $request->remarks;
 
         $payreq->save();
-
 
         return redirect()->route('search.index')->with('success', 'Payment Request updated');
     }

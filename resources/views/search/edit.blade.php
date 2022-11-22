@@ -166,7 +166,18 @@
               </div>
     
               <div class="row">
-                <div class="col-12">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="adv_category_code">Adv Category</label>
+                    <select name="adv_category_code" id="adv_category_code" class="form-control">
+                      <option value="">-- select adv category code --</option>
+                      @foreach ($adv_categories as $category)
+                        <option value="{{ $category->code }}" {{ $payreq->adv_category_code === $category->code ? 'selected' : '' }}>{{ $category->code . ' - ' . $category->description }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-8">
                     <div class="form-group">
                         <label for="remarks">Remarks</label>
                         <textarea name="remarks" id="remarks" cols="30" rows="2" class="form-control">{{ old('remarks', $payreq->remarks) }}</textarea>
