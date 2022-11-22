@@ -45,7 +45,7 @@ class ApprovedController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
-        $payreq->adv_category_code = $request->adv_category_code;
+        $payreq->advance_category_id = $request->advance_category_id;
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->remarks = $request->remarks;
         $payreq->created_by = auth()->user()->username;
@@ -89,7 +89,7 @@ class ApprovedController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
-        $payreq->adv_category_code = $request->adv_category_code;
+        $payreq->advance_category_id = $request->advance_category_id;
         $payreq->remarks = $request->remarks;
         $request->rab_id ? $payreq->rab_id = $request->rab_id : $payreq->rab_id = null;
         $payreq->updated_by = auth()->user()->username;

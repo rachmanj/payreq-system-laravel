@@ -52,7 +52,7 @@ class SearchController extends Controller
         $payreq->payreq_type = $request->payreq_type;
         $payreq->que_group = $request->que_group;
         $payreq->payreq_idr = $request->payreq_idr;
-        $payreq->adv_category_code = $request->adv_category_code;
+        $payreq->advance_category_id = $request->advance_category_id;
         $payreq->outgoing_date = $request->outgoing_date;
         $payreq->realization_date = $request->realization_date;
         $payreq->realization_num = $request->realization_num;

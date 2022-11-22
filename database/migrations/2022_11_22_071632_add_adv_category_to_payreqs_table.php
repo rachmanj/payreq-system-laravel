@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('payreqs', function (Blueprint $table) {
-            $table->string('adv_category_code')->after('payreq_idr')->nullable();
+            $table->integer('advance_category_id')->after('payreq_idr')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('payreqs', function (Blueprint $table) {
-            //
+            $table->dropColumn('adv_category_code');
         });
     }
 };

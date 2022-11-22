@@ -168,11 +168,11 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-group">
-                    <label for="adv_category_code">Adv Category</label>
-                    <select name="adv_category_code" id="adv_category_code" class="form-control">
+                    <label for="advance_category_id">Adv Category</label>
+                    <select name="advance_category_id" id="advance_category_id" class="form-control">
                       <option value="">-- select adv category code --</option>
                       @foreach ($adv_categories as $category)
-                        <option value="{{ $category->code }}" {{ $payreq->adv_category_code === $category->code ? 'selected' : '' }}>{{ $category->code . ' - ' . $category->description }}</option>
+                        <option value="{{ $category->id }}" {{ $payreq->advance_category_id === $category->id ? 'selected' : '' }}>{{ $category->code . ' - ' . $category->description }}</option>
                       @endforeach
                     </select>
                   </div>

@@ -10,4 +10,9 @@ class AdvanceCategory extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function payreqs()
+    {
+        return $this->hasMany(Payreq::class, 'adv_category_id', 'id');
+    }
 }

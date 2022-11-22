@@ -27,4 +27,11 @@ class Payreq extends Model
     {
         return $this->hasMany(Split::class, 'payreq_id', 'id');
     }
+
+    public function advance_category()
+    {
+        return $this->belongsTo(AdvanceCategory::class, 'adv_category_id', 'id')->withDefault([
+            'adv_category_code' => 'n/a',
+        ]);
+    }
 }
