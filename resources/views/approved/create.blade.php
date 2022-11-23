@@ -117,7 +117,7 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="advance_category_id">Adv Category</label>
-                    <select name="advance_category_id" id="advance_category_id" class="form-control">
+                    <select name="advance_category_id" id="advance_category_id" class="form-control select2bs4">
                       <option value="">-- select adv category code --</option>
                       @foreach ($adv_categories as $category)
                         <option value="{{ $category->id }}">{{ $category->code . ' - ' . $category->description }}</option>
