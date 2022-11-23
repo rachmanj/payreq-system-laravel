@@ -27,7 +27,7 @@ class DashboardAccountingController extends Controller
             'months' => $this->get_month(),
             'this_year_outgoings' => $this_year_outgoings,
             'categories' => AdvanceCategory::orderBy('code', 'asc')->get(),
-            'byCategories' => $this->advance_by_categories(),
+            'byCategories' => $this->advance_by_categories()->get(),
         ]);
     }
 
@@ -41,24 +41,18 @@ class DashboardAccountingController extends Controller
 
     public function advance_by_categories()
     {
-        $advances = Payreq::selectRaw('advance_category_id, sum(payreq_idr) as total')
-            ->whereYear('approve_date', Carbon::now())
-            ->groupBy('advance_category_id')
-            ->get();
+        $advances = Payreq::selectRaw('advance_category_id, substring(approve_date, 6, 2) as month, payreq_idr')
+            ->whereYear('approve_date', Carbon::now());
 
         return $advances;
     }
 
     public function test()
     {
-        $today = Carbon::now();
-        $dnc_id = User::where('username', 'dncdiv')->first()->id;
-        $payreqs = Payreq::whereMonth('outgoing_date', $today)
-            // ->orderBy('payreq_idr', 'desc')
-            ->where('user_id', '<>', $dnc_id)
-            // ->get();
-            ->sum('payreq_idr');
+        $advances = Payreq::selectRaw('advance_category_id, substring(approve_date, 6, 2) as month, payreq_idr')
+            ->whereYear('approve_date', Carbon::now())
+            ->get();
 
-        return $payreqs;
+        return $advances;
     }
 }

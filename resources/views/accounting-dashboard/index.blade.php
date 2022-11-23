@@ -12,6 +12,6 @@
 
     @include('accounting-dashboard.row-1')
     @include('accounting-dashboard.row-2')
-    {{-- @include('accounting-dashboard.row-3') --}}
+    @include('accounting-dashboard.row-3')
 
 @endsection
