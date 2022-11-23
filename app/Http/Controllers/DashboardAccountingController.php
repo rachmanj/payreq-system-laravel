@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdvanceCategory;
+use App\Models\Department;
 use App\Models\Payreq;
 use App\Models\User;
 use Carbon\Carbon;
@@ -27,7 +28,9 @@ class DashboardAccountingController extends Controller
             'months' => $this->get_month(),
             'this_year_outgoings' => $this_year_outgoings,
             'categories' => AdvanceCategory::orderBy('code', 'asc')->get(),
-            'byCategories' => $this->advance_by_categories()->get(),
+            'byCategories' => $this->payreqs_by_categories(),
+            'departments' => Department::orderBy('akronim', 'asc')->get(),
+            'byDepartments' => $this->payreqs_by_department(),
         ]);
     }
 
@@ -39,20 +42,31 @@ class DashboardAccountingController extends Controller
             ->get();
     }
 
-    public function advance_by_categories()
+    public function payreqs_by_categories()
     {
-        $advances = Payreq::selectRaw('advance_category_id, substring(approve_date, 6, 2) as month, payreq_idr')
-            ->whereYear('approve_date', Carbon::now());
+        $advances = Payreq::with('department')->selectRaw('advance_category_id, user_id, substring(outgoing_date, 6, 2) as month, payreq_idr')
+            ->whereYear('outgoing_date', Carbon::now())
+            ->get();
 
         return $advances;
     }
 
     public function test()
     {
-        $advances = Payreq::selectRaw('advance_category_id, substring(approve_date, 6, 2) as month, payreq_idr')
+        $advances = Payreq::with('department')->selectRaw('advance_category_id, user_id, substring(approve_date, 6, 2) as month, payreq_idr')
             ->whereYear('approve_date', Carbon::now())
             ->get();
 
         return $advances;
+    }
+
+    // get payreqs by user's departments
+    public function payreqs_by_department()
+    {
+        $payreqs = Payreq::with('department')->selectRaw('user_id, substring(outgoing_date, 6, 2) as month, payreq_idr')
+            ->whereYear('outgoing_date', Carbon::now())
+            ->get();
+
+        return $payreqs;
     }
 }

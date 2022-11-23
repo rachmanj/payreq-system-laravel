@@ -16,6 +16,12 @@ class Payreq extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    // relationship with department
+    public function department()
+    {
+        return $this->hasOneThrough(Department::class, User::class, 'id', 'id', 'user_id', 'department_id');
+    }
+
     public function rab()
     {
         return $this->belongsTo(Rab::class, 'rab_id', 'id')->withDefault([

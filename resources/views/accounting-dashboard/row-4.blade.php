@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card card-info">
             <div class="card-header border-transparent">
-                <h3 class="card-title"><b>Monthly Advance by Category</b></h3>
+                <h3 class="card-title"><b>Monthly Advance by Department</b></h3>
                 <h3 class="card-title float-right">(IDR 000)</h3>
             </div>
             <div class="card-body p-0">
@@ -16,20 +16,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach ($categories as $category)
+                       @foreach ($departments as $department)
                            <tr>
-                                <th>{{ $category->code }}</th>
+                                <th>{{ $department->akronim }}</th>
                                     @foreach ($months as $month)
-                                        <td class="text-right">{{ number_format($byCategories->where('month', $month->month)->where('advance_category_id', $category->id)->sum('payreq_idr') / 1000, 0) }}</td>
+                                        <td class="text-right">{{ number_format($byDepartments->where('month', $month->month)->where('department.akronim', $department->akronim)->sum('payreq_idr') / 1000, 0) }}</td>
                                     @endforeach
                            </tr>
-                        @endforeach
-                           
-                        <tr><th>Others</th>
-                            @foreach ($months as $month)
-                                    <td class="text-right">{{ number_format($byCategories->where('month', $month->month)->whereNull('advance_category_id')->sum('payreq_idr') / 1000, 0) }}</td>
-                             @endforeach
-                        </tr>
+                       @endforeach
                     </tbody>
                 </table>
             </div>
