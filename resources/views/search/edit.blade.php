@@ -114,7 +114,7 @@
                 <div class="col-4">
                   <div class="form-group">
                     <label for="periode_ofr">Periode OFR</label>
-                    <input type="date" name="periode_ofr" value="{{ old('periode_ofr', $payreq->periode_ofr) }}" class="form-control">
+                    <input type="month" name="periode_ofr" value="{{ $payreq->periode_ofr ? date('Y-m', strtotime($payreq->periode_ofr)) :  '' }}" class="form-control">
                   </div>
                 </div>
               </div>

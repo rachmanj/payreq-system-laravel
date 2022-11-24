@@ -29,6 +29,10 @@ class SearchController extends Controller
         $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
         $adv_categories = AdvanceCategory::orderBy('code', 'asc')->get();
 
+        // $month_ofr = date('Y-m', strtotime($payreq->periode_ofr));
+        // return $month_ofr;
+        // die;
+
         return view('search.edit', compact('payreq', 'employees', 'rabs', 'adv_categories'));
     }
 
@@ -65,7 +69,11 @@ class SearchController extends Controller
             $payreq->periode_ofr = null;
         } else {
             $payreq->budgeted = 1;
-            $payreq->periode_ofr = $request->periode_ofr;
+            if ($request->periode_ofr) {
+                $payreq->periode_ofr = $request->periode_ofr . '-01';
+            } else {
+                $payreq->periode_ofr = date('Y-m-d');
+            }
         }
         $payreq->remarks = $request->remarks;
 
