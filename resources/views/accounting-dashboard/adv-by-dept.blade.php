@@ -1,5 +1,4 @@
-<div class="row">
-    <div class="col-12">
+
         <div class="card card-info">
             <div class="card-header border-transparent">
                 <h3 class="card-title"><b>Monthly Advance by Department</b></h3>
@@ -28,8 +27,4 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="col-6">
 
-    </div>
-</div>

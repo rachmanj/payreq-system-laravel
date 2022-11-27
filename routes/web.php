@@ -6,6 +6,7 @@ use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardAccountingController;
 use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
 use App\Http\Controllers\PermissionController;
@@ -126,3 +127,5 @@ Route::middleware('auth')->group(function () {
         Route::get('test', [DashboardAccountingController::class, 'test'])->name('test');
     });
 });
+
+Route::get('/kirimemail', [EmailController::class, 'index']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdvanceCategory;
 use App\Models\Department;
 use App\Models\Payreq;
+use App\Models\Transaksi;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ class DashboardAccountingController extends Controller
             'byCategories' => $this->payreqs_by_categories(),
             'departments' => Department::orderBy('akronim', 'asc')->get(),
             'byDepartments' => $this->payreqs_by_department(),
+            'personels' => Transaksi::select('created_by')->distinct()->get(),
+            'activities_months' => $this->get_activities_months(),
+            'activities_count' => $this->get_activities_count()
         ]);
     }
 
@@ -51,13 +55,31 @@ class DashboardAccountingController extends Controller
         return $advances;
     }
 
-    public function test()
+    public function get_activities_count()
     {
-        $advances = Payreq::with('department')->selectRaw('advance_category_id, user_id, substring(approve_date, 6, 2) as month, payreq_idr')
-            ->whereYear('approve_date', Carbon::now())
+        $activities_count = Transaksi::select(
+            "created_by",
+            DB::raw("(count(created_by)) as total_count"),
+            DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
+        )
+            ->orderBy('created_at')
+            ->whereYear('created_at', Carbon::now())
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m'), created_by"))
             ->get();
 
-        return $advances;
+        return $activities_count;
+    }
+
+    public function get_activities_months()
+    {
+        $activities_months = Transaksi::select(
+            DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
+        )
+            ->orderBy('created_at')
+            ->distinct()
+            ->get();
+
+        return $activities_months;
     }
 
     // get payreqs by user's departments
@@ -68,5 +90,10 @@ class DashboardAccountingController extends Controller
             ->get();
 
         return $payreqs;
+    }
+
+    public function test()
+    {
+        return $this->get_activities_count();
     }
 }
