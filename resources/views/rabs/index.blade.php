@@ -31,7 +31,7 @@
             <th>Budget</th>
             <th>Advance</th>
             <th>Realization</th>
-            <th>Status</th>
+            <th>Progress</th>
             <th></th>
           </tr>
           </thead>
@@ -176,13 +176,13 @@
         {data: 'budget'},
         {data: 'advance'},
         {data: 'realization'},
-        {data: 'status'},
+        {data: 'progress'},
         {data: 'action', orderable: false, searchable: false},
       ],
       fixedHeader: true,
       columnDefs: [
               {
-                "targets": [4, 5, 6],
+                "targets": [4, 5, 6, 7],
                 "className": "text-right"
               }
             ]

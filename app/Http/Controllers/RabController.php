@@ -140,7 +140,15 @@ class RabController extends Controller
             ->editColumn('realization', function ($rab) {
                 $payreq = Payreq::where('rab_id', $rab->id)
                     ->whereNotNull('realization_date');
-                return number_format($payreq->sum('payreq_idr'), 2);
+                return number_format($payreq->sum('realization_amount'), 2);
+            })
+            ->addColumn('progress', function ($rab) {
+                $payreqs = Payreq::where('rab_id', $rab->id)->get();
+                $total_advance = $payreqs->whereNotNull('outgoing_date')->whereNull('realization_date')->sum('payreq_idr');
+                $total_realization = $payreqs->sum('realization_amount');
+                $total_release = $total_advance + $total_realization;
+                $progress = ($total_release / $rab->budget) * 100;
+                return number_format($progress, 2) . '%';
             })
             ->addIndexColumn()
             ->addColumn('action', 'rabs.action')

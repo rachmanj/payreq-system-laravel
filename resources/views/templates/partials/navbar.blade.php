@@ -21,11 +21,9 @@
           @include('templates.partials.menu.payreq')
           @include('templates.partials.menu.accounting')
           @endhasanyrole
-
+          
           @hasanyrole('superadmin|admin|acc_cashier|dnc_staff')
-          <li class="nav-item">
-            <a href="{{ route('rabs.index') }}" class="nav-link">RABs</a>
-          </li>
+          @include('templates.partials.menu.dnc')
           @endhasanyrole
 
           @can('akses_admin')

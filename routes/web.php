@@ -5,6 +5,7 @@ use App\Http\Controllers\AdvanceCategoryController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardAccountingController;
+use App\Http\Controllers\DashboardDncController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
@@ -125,6 +126,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('acc-dashboard')->name('acc-dashboard.')->group(function () {
         Route::get('/', [DashboardAccountingController::class, 'index'])->name('index');
         Route::get('test', [DashboardAccountingController::class, 'test'])->name('test');
+    });
+
+    Route::prefix('dnc-dashboard')->name('dnc-dashboard.')->group(function () {
+        Route::get('/', [DashboardDncController::class, 'index'])->name('index');
+        Route::get('test', [DashboardDncController::class, 'test'])->name('test');
     });
 });
 
