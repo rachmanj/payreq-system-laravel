@@ -22,7 +22,7 @@
             @include('dashboard-dnc.outs-by-month')
         </div>
         <div class="col-3">
-            @include('dashboard-dnc.release-byproject')
+            {{-- @include('dashboard-dnc.release-byproject') --}}
         </div>
     </div>
     {{-- END ROW 2 --}}
