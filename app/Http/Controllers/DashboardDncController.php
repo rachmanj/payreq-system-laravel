@@ -13,10 +13,9 @@ class DashboardDncController extends Controller
     public function index()
     {
         return view('dashboard-dnc.index', [
-            'this_year_payreqs' =>  $this->dnc_payreqs_this_year()->get(),
-            'this_month_payreqs' =>  $this->dnc_payreqs_this_year()->whereMonth('created_at', Carbon::now())
-                ->get(),
-            'this_year_realization' => $this->realization_amount(),
+            // 'this_year_payreqs' =>  $this->dnc_payreqs_this_year()->get(),
+            'this_year_release' => $this->this_year_release(),
+            'this_month_outgoing' =>  $this->this_month_outgoing(),
             'monthly_outgoings_amount' => $this->outgoings_amount_by_month()
         ]);
     }
@@ -37,18 +36,48 @@ class DashboardDncController extends Controller
         return $type_other_amount + $type_advance_amount;
     }
 
+    public function this_year_release()
+    {
+        $dnc_id = User::where('username', 'dncdiv')->first()->id;
+        $payreqs = Payreq::whereYear('outgoing_date', Carbon::now())
+            ->where('user_id', $dnc_id)
+            ->whereNotNull('rab_id')
+            ->get();
+        $total_advance = $payreqs->whereNotNull('outgoing_date')
+            ->whereNull('realization_date')
+            ->sum('payreq_idr');
+        $total_realization = $payreqs->whereNotNull('realization_date')
+            ->sum('realization_amount');
+        $total_release = $total_advance + $total_realization;
+
+        return number_format($total_release, 0);
+    }
+
+    public function this_month_outgoing()
+    {
+        $dnc_id = User::where('username', 'dncdiv')->first()->id;
+        $payreqs = Payreq::whereYear('outgoing_date', Carbon::now())
+            ->whereMonth('outgoing_date', Carbon::now())
+            ->where('user_id', $dnc_id)
+            ->whereNotNull('rab_id')
+            ->sum('payreq_idr');
+        // $total_advance = $payreqs->sum('payreq_idr');
+
+        return number_format($payreqs, 0);
+    }
+
     public function outgoings_amount_by_month()
     {
         $dnc_id = User::where('username', 'dncdiv')->first()->id;
         $outgoing_amount = Payreq::select(
             DB::raw("(sum(payreq_idr)) as total_amount"),
-            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
+            DB::raw("(DATE_FORMAT(outgoing_date, '%m')) as month")
         )
-            ->whereYear('approve_date', Carbon::now())
+            ->whereYear('outgoing_date', Carbon::now())
             ->where('user_id', $dnc_id)
             ->whereNotNull('rab_id')
             ->whereNotNull('outgoing_date')
-            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
+            ->groupBy(DB::raw("DATE_FORMAT(outgoing_date, '%m')"))
             ->get();
 
         return $outgoing_amount;
@@ -57,17 +86,17 @@ class DashboardDncController extends Controller
     public function test()
     {
         $dnc_id = User::where('username', 'dncdiv')->first()->id;
-        $outgoing_amount = Payreq::select(
-            DB::raw("(sum(payreq_idr)) as total_amount"),
-            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
-        )
-            ->whereYear('approve_date', Carbon::now())
+        $payreqs = Payreq::whereYear('outgoing_date', Carbon::now())
+            ->whereMonth('outgoing_date', Carbon::now())
             ->where('user_id', $dnc_id)
             ->whereNotNull('rab_id')
-            ->whereNotNull('outgoing_date')
-            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
             ->get();
+        $total_advance = $payreqs->whereNull('realization_date')
+            ->sum('payreq_idr');
+        $total_realization = $payreqs->whereNotNull('realization_date')
+            ->sum('realization_amount');
+        $total_release = $total_advance + $total_realization;
 
-        return $outgoing_amount;
+        return number_format($total_release, 0);
     }
 }

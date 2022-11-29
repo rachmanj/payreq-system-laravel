@@ -145,7 +145,7 @@ class RabController extends Controller
             ->addColumn('progress', function ($rab) {
                 $payreqs = Payreq::where('rab_id', $rab->id)->get();
                 $total_advance = $payreqs->whereNotNull('outgoing_date')->whereNull('realization_date')->sum('payreq_idr');
-                $total_realization = $payreqs->sum('realization_amount');
+                $total_realization = $payreqs->whereNotNull('realization_date')->sum('realization_amount');
                 $total_release = $total_advance + $total_realization;
                 $progress = ($total_release / $rab->budget) * 100;
                 return number_format($progress, 2) . '%';
