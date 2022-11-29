@@ -28,9 +28,11 @@ class DashboardAccountingController extends Controller
             'this_month_outgoings' => Payreq::whereMonth('outgoing_date', $today)->where('user_id', '<>', $dnc_id),
             'months' => $this->get_month(),
             'this_year_outgoings' => $this_year_outgoings,
-            'categories' => AdvanceCategory::orderBy('code', 'asc')->get(),
+            'categories' => $this->get_payreq_categories(),
             'byCategories' => $this->payreqs_by_categories(),
             'departments' => Department::orderBy('akronim', 'asc')->get(),
+            'department_months' => $this->get_department_months(),
+            'payreq_departments' => $this->get_payreq_departments(),
             'byDepartments' => $this->payreqs_by_department(),
             'personels' => Transaksi::select('created_by')->distinct()->get(),
             'activities_months' => $this->get_activities_months(),
@@ -44,6 +46,15 @@ class DashboardAccountingController extends Controller
             ->whereYear('outgoing_date', Carbon::now())
             ->distinct('month')
             ->get();
+    }
+
+    public function get_payreq_categories()
+    {
+        $categories = AdvanceCategory::whereHas('payreqs', function ($query) {
+            $query->whereYear('outgoing_date', Carbon::now());
+        })->orderBy('code', 'asc')->get();
+
+        return $categories;
     }
 
     public function payreqs_by_categories()
@@ -82,7 +93,28 @@ class DashboardAccountingController extends Controller
         return $activities_months;
     }
 
-    // get payreqs by user's departments
+    public function get_department_months()
+    {
+        $department_months = Payreq::select(
+            DB::raw("(DATE_FORMAT(outgoing_date, '%m')) as month")
+        )
+            ->whereNotNull('outgoing_date')
+            ->orderBy('month')
+            ->distinct()
+            ->get();
+
+        return $department_months;
+    }
+
+    public function get_payreq_departments()
+    {
+        $departments = Department::select('akronim')->whereHas('payreqs', function ($query) {
+            $query->whereYear('outgoing_date', Carbon::now());
+        })->distinct()->orderBy('akronim', 'asc')->get();
+
+        return $departments;
+    }
+
     public function payreqs_by_department()
     {
         $payreqs = Payreq::with('department')->selectRaw('user_id, substring(outgoing_date, 6, 2) as month, payreq_idr')
@@ -94,6 +126,10 @@ class DashboardAccountingController extends Controller
 
     public function test()
     {
-        return $this->get_activities_count();
+        $categories = AdvanceCategory::whereHas('payreqs', function ($query) {
+            $query->whereYear('outgoing_date', Carbon::now());
+        })->orderBy('code', 'asc')->get();
+
+        return $categories;
     }
 }

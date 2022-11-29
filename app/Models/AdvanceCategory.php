@@ -13,6 +13,6 @@ class AdvanceCategory extends Model
 
     public function payreqs()
     {
-        return $this->hasMany(Payreq::class, 'adv_category_id', 'id');
+        return $this->hasMany(Payreq::class, 'advance_category_id', 'id');
     }
 }

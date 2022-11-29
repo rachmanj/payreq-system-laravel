@@ -8,14 +8,14 @@
                 <table class="table m-0 table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th></th>
-                            @foreach ($months as $month)
+                            <th>Dept</th>
+                            @foreach ($department_months as $month)
                                 <th class="text-center">{{ date('M', strtotime('2022-' . $month->month . '-01')) }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach ($departments as $department)
+                       @foreach ($payreq_departments as $department)
                            <tr>
                                 <th>{{ $department->akronim }}</th>
                                     @foreach ($months as $month)

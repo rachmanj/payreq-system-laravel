@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payreq;
+use App\Models\Rab;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,9 @@ class DashboardDncController extends Controller
             // 'this_year_payreqs' =>  $this->dnc_payreqs_this_year()->get(),
             'this_year_release' => $this->this_year_release(),
             'this_month_outgoing' =>  $this->this_month_outgoing(),
-            'monthly_outgoings_amount' => $this->outgoings_amount_by_month()
+            'monthly_outgoings_amount' => $this->outgoings_amount_by_month(),
+            'rab_projects' => Rab::select('project_code')->orderBy('project_code')->distinct()->get(),
+            'release_amount_by_project' => $this->release_amount_by_project()
         ]);
     }
 
@@ -61,7 +64,6 @@ class DashboardDncController extends Controller
             ->where('user_id', $dnc_id)
             ->whereNotNull('rab_id')
             ->sum('payreq_idr');
-        // $total_advance = $payreqs->sum('payreq_idr');
 
         return number_format($payreqs, 0);
     }
@@ -83,20 +85,17 @@ class DashboardDncController extends Controller
         return $outgoing_amount;
     }
 
+    public function release_amount_by_project()
+    {
+        $rab_oustgoings = Rab::select('project_code')->withSum('payreqs', 'payreq_idr')->whereHas('payreqs', function ($query) {
+            $query->whereNotNull('outgoing_date');
+        })->get();
+
+        return $rab_oustgoings;
+    }
+
     public function test()
     {
-        $dnc_id = User::where('username', 'dncdiv')->first()->id;
-        $payreqs = Payreq::whereYear('outgoing_date', Carbon::now())
-            ->whereMonth('outgoing_date', Carbon::now())
-            ->where('user_id', $dnc_id)
-            ->whereNotNull('rab_id')
-            ->get();
-        $total_advance = $payreqs->whereNull('realization_date')
-            ->sum('payreq_idr');
-        $total_realization = $payreqs->whereNotNull('realization_date')
-            ->sum('realization_amount');
-        $total_release = $total_advance + $total_realization;
-
-        return number_format($total_release, 0);
+        return $this->test2()->where('project_code', '023C')->sum('payreqs_sum_payreq_idr');
     }
 }
