@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Payreq;
 use Illuminate\Http\Request;
 
@@ -30,6 +31,13 @@ class RealizationController extends Controller
         $payreq->realization_amount = $request->realization_amount;
         $payreq->realization_date = $realization_date;
         $payreq->save();
+
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Realization';
+        $activity->document_number = $payreq->payreq_num;
+        $activity->save();
 
         return redirect()->route('realization.index')->with('success', 'Payment Request updated');
     }

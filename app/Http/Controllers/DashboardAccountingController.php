@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\AdvanceCategory;
 use App\Models\Department;
 use App\Models\Payreq;
@@ -35,6 +36,7 @@ class DashboardAccountingController extends Controller
             'payreq_departments' => $this->get_payreq_departments(),
             'byDepartments' => $this->payreqs_by_department(),
             'personels' => Transaksi::select('created_by')->distinct()->get(),
+            'activity_personels' => Activity::select('user_id')->whereYear('created_at', Carbon::now())->distinct()->get(),
             'activities_months' => $this->get_activities_months(),
             'activities_count' => $this->get_activities_count()
         ]);
@@ -68,14 +70,14 @@ class DashboardAccountingController extends Controller
 
     public function get_activities_count()
     {
-        $activities_count = Transaksi::select(
-            "created_by",
-            DB::raw("(count(created_by)) as total_count"),
+        $activities_count = Activity::select(
+            "user_id",
+            DB::raw("(count(user_id)) as total_count"),
             DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
         )
             ->orderBy('created_at')
             ->whereYear('created_at', Carbon::now())
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m'), created_by"))
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m'), user_id"))
             ->get();
 
         return $activities_count;
@@ -83,7 +85,7 @@ class DashboardAccountingController extends Controller
 
     public function get_activities_months()
     {
-        $activities_months = Transaksi::select(
+        $activities_months = Activity::select(
             DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
         )
             ->orderBy('created_at')
@@ -124,12 +126,30 @@ class DashboardAccountingController extends Controller
         return $payreqs;
     }
 
+    public function test2()
+    {
+        $activities_count = Activity::select(
+            "user_id",
+            DB::raw("(count(user_id)) as total_count"),
+            DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
+        )
+            ->orderBy('created_at')
+            ->whereYear('created_at', Carbon::now())
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m'), user_id"))
+            ->get();
+
+        return $activities_count;
+    }
+
     public function test()
     {
-        $categories = AdvanceCategory::whereHas('payreqs', function ($query) {
-            $query->whereYear('outgoing_date', Carbon::now());
-        })->orderBy('code', 'asc')->get();
+        $activities_months = Activity::select(
+            'user_id'
+        )
+            ->orderBy('created_at')
+            ->distinct()
+            ->get();
 
-        return $categories;
+        return $activities_months;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Activity;
 use App\Models\Payreq;
 use App\Models\Rekap;
 use App\Models\Split;
@@ -71,6 +72,13 @@ class OutgoingController extends Controller
         $transaksi->save();
         $payreq->save();
         $rekap->save();
+
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Outgoing';
+        $activity->document_number = $payreq->payreq_num;
+        $activity->save();
 
         return redirect()->route('outgoing.index')->with('success', 'Payment Request updated');
     }
@@ -152,6 +160,13 @@ class OutgoingController extends Controller
         $transaksi->amount = $request->split_amount;
         $transaksi->save();
 
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Split';
+        $activity->document_number = $payreq->payreq_num;
+        $activity->save();
+
         return redirect()->route('outgoing.split', $payreq->id)->with('success', 'Split added');
     }
 
@@ -198,6 +213,13 @@ class OutgoingController extends Controller
         $transaksi->save();
         $account->save();
         $rekap->save();
+
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Outgoing';
+        $activity->document_number = $payreq->payreq_num;
+        $activity->save();
 
         return redirect()->route('outgoing.index')->with('success', 'Payment Request updated');
     }

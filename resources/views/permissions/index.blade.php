@@ -13,12 +13,6 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            @if (Session::has('success'))
-              <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ Session::get('success') }}
-              </div>
-            @endif
             <div class="card-title">Permissions</div>
             <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#modal-input"><i class="fas fa-plus"></i> Permission</button>
           </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Activity;
 use App\Models\Payreq;
 use App\Models\Rekap;
 use App\Models\Transaksi;
@@ -96,6 +97,13 @@ class VerifyController extends Controller
 
         $payreq->verify_date = $verify_date;
         $payreq->save();
+
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Verify';
+        $activity->document_number = $payreq->payreq_num;
+        $activity->save();
 
         return redirect()->route('verify.index')->with('success', 'Payment Request updated');
     }

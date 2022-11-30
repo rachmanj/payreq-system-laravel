@@ -13,12 +13,6 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        @if (Session::has('success'))
-          <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('success') }}
-          </div>
-        @endif
         <form action="{{ route('search.display') }}" method="POST">
           @csrf
           <div class="col-6">
