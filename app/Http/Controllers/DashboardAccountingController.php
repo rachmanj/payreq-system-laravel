@@ -38,7 +38,8 @@ class DashboardAccountingController extends Controller
             'personels' => Transaksi::select('created_by')->distinct()->get(),
             'activity_personels' => Activity::select('user_id')->whereYear('created_at', Carbon::now())->distinct()->get(),
             'activities_months' => $this->get_activities_months(),
-            'activities_count' => $this->get_activities_count()
+            'activities_count' => $this->get_activities_count(),
+            'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted()
         ]);
     }
 
@@ -126,6 +127,21 @@ class DashboardAccountingController extends Controller
         return $payreqs;
     }
 
+    public function get_payreqs_not_budgeted()
+    {
+        $dnc_id = User::where('username', 'dncdiv')->first()->id;
+        $outgoing_amount = Payreq::select(
+            DB::raw("(sum(payreq_idr)) as total_amount"),
+            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
+        )
+            ->where('budgeted', 0)
+            ->where('user_id', '<>', $dnc_id)
+            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
+            ->get();
+
+        return $outgoing_amount;
+    }
+
     public function test2()
     {
         $activities_count = Activity::select(
@@ -143,13 +159,17 @@ class DashboardAccountingController extends Controller
 
     public function test()
     {
-        $activities_months = Activity::select(
-            'user_id'
+        $dnc_id = User::where('username', 'dncdiv')->first()->id;
+        $outgoing_amount = Payreq::select(
+            DB::raw("(sum(payreq_idr)) as total_amount"),
+            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
         )
-            ->orderBy('created_at')
-            ->distinct()
+            // ->whereNotNull('outgoing_date')
+            ->where('budgeted', 0)
+            ->where('user_id', '<>', $dnc_id)
+            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
             ->get();
 
-        return $activities_months;
+        return $outgoing_amount;
     }
 }

@@ -29,6 +29,9 @@
         <div class="col-4">
             @include('accounting-dashboard.monthly-outgoing')
         </div>
+        <div class="col-4">
+            @include('accounting-dashboard.not-budgeted')
+        </div>
     </div>
     {{-- END ROW 3 --}}
 
