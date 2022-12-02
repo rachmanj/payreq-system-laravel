@@ -132,11 +132,11 @@ class DashboardAccountingController extends Controller
         $dnc_id = User::where('username', 'dncdiv')->first()->id;
         $outgoing_amount = Payreq::select(
             DB::raw("(sum(payreq_idr)) as total_amount"),
-            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
+            DB::raw("(DATE_FORMAT(approve_date, '%Y-%m')) as month")
         )
             ->where('budgeted', 0)
             ->where('user_id', '<>', $dnc_id)
-            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
+            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%Y-%m')"))
             ->get();
 
         return $outgoing_amount;
@@ -162,12 +162,12 @@ class DashboardAccountingController extends Controller
         $dnc_id = User::where('username', 'dncdiv')->first()->id;
         $outgoing_amount = Payreq::select(
             DB::raw("(sum(payreq_idr)) as total_amount"),
-            DB::raw("(DATE_FORMAT(approve_date, '%m')) as month")
+            DB::raw("(DATE_FORMAT(approve_date, '%Y-%m')) as month")
         )
             // ->whereNotNull('outgoing_date')
             ->where('budgeted', 0)
             ->where('user_id', '<>', $dnc_id)
-            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%m')"))
+            ->groupBy(DB::raw("DATE_FORMAT(approve_date, '%Y-%m')"))
             ->get();
 
         return $outgoing_amount;

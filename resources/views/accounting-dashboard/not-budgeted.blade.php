@@ -13,7 +13,8 @@
             <tbody>
                 @foreach ($payreqs_not_budgeted as $payreq)
                     <tr>
-                        <td>{{ date('M', strtotime('2022-' . $payreq->month . '-01')) }}</td>
+                        <td>{{ date('M Y', strtotime($payreq->month . '-01')) }}</td>
+                        {{-- <td>{{ $payreq->month }}</td> --}}
                         <td class="text-right">{{ number_format($payreq->total_amount, 0) }}</td>
                     </tr>
                 @endforeach
