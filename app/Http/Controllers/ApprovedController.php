@@ -53,6 +53,13 @@ class ApprovedController extends Controller
         $payreq->budgeted = $request->budgeted;
         $payreq->save();
 
+        // create this user activity
+        $activity = new Activity();
+        $activity->user_id = auth()->user()->id;
+        $activity->activity_name = 'Approve';
+        $activity->document_number = $request->payreq_num;
+        $activity->save();
+
         return redirect()->route('approved.index')->with('success', 'Payment Request created');
     }
 
@@ -96,13 +103,6 @@ class ApprovedController extends Controller
         $payreq->updated_by = auth()->user()->username;
         $payreq->budgeted = $request->budgeted;
         $payreq->save();
-
-        // create this user activity
-        $activity = new Activity();
-        $activity->user_id = auth()->user()->id;
-        $activity->activity_name = 'Approve';
-        $activity->document_number = $payreq->payreq_num;
-        $activity->save();
 
         return redirect()->route('approved.index')->with('success', 'Payment Request updated');
     }
