@@ -48,6 +48,7 @@ class DashboardAccountingController extends Controller
         return Payreq::selectRaw('substring(outgoing_date, 6, 2) as month')
             ->whereYear('outgoing_date', Carbon::now())
             ->distinct('month')
+            ->orderBy('month', 'asc')
             ->get();
     }
 
