@@ -14,17 +14,6 @@
 
     <div class="card">
       <div class="card-header">
-        @if (Session::has('success'))
-          <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ Session::get('success') }}
-          </div>
-        @endif
-        @if (Session::has('error'))
-          <div class="alert alert-danger">
-            {{ Session::get('error') }}
-          </div>
-        @endif
         <button href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-input"><i class="fas fa-plus"></i> User</button>
       </div>
       <!-- /.card-header -->
@@ -35,6 +24,7 @@
             <th>No</th>
             <th>Name</th>
             <th>Username</th>
+            <th>Email</th>
             <th>is active</th>
             <th></th>
           </tr>
@@ -145,6 +135,7 @@
         {data: 'DT_RowIndex', orderable: false, searchable: false},
         {data: 'name'},
         {data: 'username'},
+        {data: 'email'},
         {data: 'is_active'},
         {data: 'action', orderable: false, searchable: false},
       ],

@@ -132,6 +132,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [DashboardDncController::class, 'index'])->name('index');
         Route::get('test', [DashboardDncController::class, 'test'])->name('test');
     });
-});
 
-Route::get('/kirimemail', [EmailController::class, 'index']);
+    Route::prefix('emails')->name('emails.')->group(function () {
+        Route::get('/data', [EmailController::class, 'data'])->name('data');
+        Route::get('/', [EmailController::class, 'index'])->name('index');
+        Route::get('/push/{id}', [EmailController::class, 'push'])->name('push');
+    });
+});
