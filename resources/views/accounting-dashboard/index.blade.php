@@ -57,3 +57,12 @@
     {{-- @include('accounting-dashboard.row-3') --}}
 
 @endsection
+
+@section('script')
+<script>
+    // tooltip
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+@endsection

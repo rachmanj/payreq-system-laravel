@@ -18,7 +18,7 @@
                     <tbody>
                        @foreach ($categories as $category)
                            <tr>
-                                <th>{{ $category->code }}</th>
+                                <th><a href="" data-toggle="tooltip" data-placement="top" title="{{ $category->description }}">{{ $category->code }}</a></th>
                                     @foreach ($months as $month)
                                         <td class="text-right">{{ number_format($byCategories->where('month', $month->month)->where('advance_category_id', $category->id)->sum('payreq_idr') / 1000, 0) }}</td>
                                     @endforeach
