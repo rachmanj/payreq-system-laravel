@@ -95,7 +95,11 @@ class VerifyController extends Controller
             $adv_rekap->delete();
         }
 
+        // count days between outgoing_date and verify_date
+        $days = date_diff(date_create($payreq->outgoing_date), date_create($verify_date))->format('%a');
+
         $payreq->verify_date = $verify_date;
+        $payreq->otvd = $days;
         $payreq->save();
 
         // create this user activity

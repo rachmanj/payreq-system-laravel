@@ -12,7 +12,8 @@
 
     {{-- ROW 1 --}}
     <div class="row">
-        @include('accounting-dashboard.total-this-month-outs')
+        {{-- @include('accounting-dashboard.total-this-month-outs') --}}
+        @include('accounting-dashboard.rekaps')
     </div>
     {{-- END ROW 1 --}}
 
@@ -26,7 +27,7 @@
     
     {{-- ROW 3 --}}
     <div class="row">
-        <div class="col-4">
+        <div class="col-6">
             @include('accounting-dashboard.monthly-outgoing')
         </div>
         <div class="col-4">

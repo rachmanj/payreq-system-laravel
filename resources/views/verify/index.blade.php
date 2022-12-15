@@ -35,7 +35,7 @@
             <th>#</th>
             <th>Name</th>
             <th>Payreq No</th>
-            <th>Apprv Date</th>
+            <th>Outgoing Date</th>
             <th>Realz No</th>
             <th>Realz Date</th>
             <th>IDR</th>
@@ -81,7 +81,7 @@
         {data: 'DT_RowIndex', orderable: false, searchable: false},
         {data: 'employee'},
         {data: 'payreq_num'},
-        {data: 'approve_date'},
+        {data: 'outgoing_date'},
         {data: 'realization_num'},
         {data: 'realization_date'},
         {data: 'payreq_idr'},
