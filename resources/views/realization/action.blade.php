@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">No: {{ $model->payreq_num }} | {{ $model->employee->fullname }}  | IDR. {{ number_format($model->payreq_idr, 0) }}</h5>
+        <h5 class="modal-title">No: {{ $model->payreq_num }} | {{ $model->employee->name }}  | IDR. {{ number_format($model->payreq_idr, 0) }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
