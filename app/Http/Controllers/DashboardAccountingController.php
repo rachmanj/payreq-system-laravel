@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Activity;
 use App\Models\AdvanceCategory;
 use App\Models\Department;
@@ -9,7 +10,6 @@ use App\Models\Payreq;
 use App\Models\Transaksi;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardAccountingController extends Controller
@@ -36,7 +36,8 @@ class DashboardAccountingController extends Controller
             'activity_personels' => Activity::select('user_id')->whereYear('created_at', $today)->distinct()->get(),
             'activities_months' => $this->get_activities_months(),
             'activities_count' => $this->get_activities_count(),
-            'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted()
+            'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted(),
+            'accounts' => Account::all()
         ]);
     }
 

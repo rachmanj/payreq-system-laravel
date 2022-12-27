@@ -22,9 +22,9 @@
                 <!-- /.col -->
                 <div class="col-sm-3 col-6">
                   <div class="description-block border-right">
-                    <span class="description-percentage"> - </span>
-                    <h5 class="description-header"> - </h5>
-                    <span class="description-text"> - </span>
+                    <span class="description-text">Balance</span>
+                    <h5 class="description-header">Rp.{{ number_format($accounts->where('account_no', '111111')->first()->balance) }} <small>(PC)</small></h5>
+                    <h5 class="description-header">Rp.{{ number_format($accounts->where('account_no', '111115')->first()->balance) }} <small>(DNC)</small></h5>
                   </div>
                   <!-- /.description-block -->
                 </div>
