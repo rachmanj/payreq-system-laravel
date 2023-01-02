@@ -32,7 +32,7 @@
                 <div class="col-sm-3 col-6">
                   <div class="description-block">
                       <span class="description-text">This Year Avg Days</span>
-                      <h5 class="description-header">{{ number_format($yearly_average_days->avg_days, 2) }}</h5>
+                      <h5 class="description-header">{{ $yearly_average_days }}</h5>
                       <span class="description-percentage">(Outgoing to Verify Date)</span>
                   </div>
                   <!-- /.description-block -->

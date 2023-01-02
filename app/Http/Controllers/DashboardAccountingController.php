@@ -25,7 +25,7 @@ class DashboardAccountingController extends Controller
             'months' => $this->get_month(),
             'this_year_outgoings' => $this->this_year_outgoings(),
             'monthly_average_days' => $this->monthly_average_days(),
-            'yearly_average_days' => $this->yearly_average_days()->where('year', $today->year)->first(),
+            'yearly_average_days' => $this->yearly_average_days()->where('year', $today->year)->first() ? number_format($this->yearly_average_days()->where('year', $today->year)->first()->avg_days, 2) : '-',
             'categories' => $this->get_payreq_categories(),
             'byCategories' => $this->payreqs_by_categories(),
             'departments' => Department::orderBy('akronim', 'asc')->get(),

@@ -24,7 +24,7 @@
                 <th>Total</th>
                 <th class="text-right">{{ number_format($this_year_outgoings->sum('payreq_idr'), 0) }}</th>
                 <th class="text-right">{{ number_format($this_year_outgoings->count(), 0) }}</th>
-                <th class="text-right">{{ number_format($yearly_average_days->avg_days, 2) }}</th>
+                <th class="text-right">{{ $yearly_average_days }}</th>
             </tbody>
         </table>
     </div>
