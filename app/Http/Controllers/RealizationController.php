@@ -32,12 +32,9 @@ class RealizationController extends Controller
         $payreq->realization_date = $realization_date;
         $payreq->save();
 
-        // create this user activity
-        $activity = new Activity();
-        $activity->user_id = auth()->user()->id;
-        $activity->activity_name = 'Realization';
-        $activity->document_number = $payreq->payreq_num;
-        $activity->save();
+        // SAVE ACTIVITY
+        $activityCtrl = app(ActivityController::class);
+        $activityCtrl->store(auth()->user()->id, 'Realization PR', $payreq->payreq_num);
 
         return redirect()->route('realization.index')->with('success', 'Payment Request updated');
     }

@@ -119,7 +119,7 @@ class RabController extends Controller
 
     public function data()
     {
-        $rabs = Rab::orderBy('rab_no', 'desc')->get();
+        $rabs = Rab::orderBy('date', 'desc')->orderBy('rab_no', 'desc')->get();
 
         return datatables()->of($rabs)
             ->editColumn('date', function ($rab) {

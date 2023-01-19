@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardAccountingController;
 use App\Http\Controllers\DashboardDncController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\GiroController;
+use App\Http\Controllers\GiroDetailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
 use App\Http\Controllers\PermissionController;
@@ -138,4 +140,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [EmailController::class, 'index'])->name('index');
         Route::get('/push/{id}', [EmailController::class, 'push'])->name('push');
     });
+
+    Route::prefix('giros')->name('giros.')->group(function () {
+        Route::get('/data', [GiroController::class, 'data'])->name('data');
+        Route::get('/{giro_id}/data', [GiroDetailController::class, 'data'])->name('detail.data');
+        Route::get('/{giro_id}', [GiroDetailController::class, 'index'])->name('detail.index');
+        Route::post('/{giro_id}/store', [GiroDetailController::class, 'store'])->name('detail.store');
+        Route::delete('/{giro_detail_id}/destroy', [GiroDetailController::class, 'destroy'])->name('detail.destroy');
+    });
+    Route::resource('giros', GiroController::class);
 });

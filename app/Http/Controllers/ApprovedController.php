@@ -53,12 +53,9 @@ class ApprovedController extends Controller
         $payreq->budgeted = $request->budgeted;
         $payreq->save();
 
-        // create this user activity
-        $activity = new Activity();
-        $activity->user_id = auth()->user()->id;
-        $activity->activity_name = 'Approve';
-        $activity->document_number = $request->payreq_num;
-        $activity->save();
+        // SAVE ACTIVITY
+        $activityCtrl = app(ActivityController::class);
+        $activityCtrl->store(auth()->user()->id, 'Approve PR', $request->payreq_num);
 
         return redirect()->route('approved.index')->with('success', 'Payment Request created');
     }
