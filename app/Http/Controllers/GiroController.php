@@ -104,7 +104,7 @@ class GiroController extends Controller
 
     public function data()
     {
-        $giros = Giro::all();
+        $giros = Giro::orderBy('tanggal', 'desc')->orderBy('account', 'asc')->get();
 
         return datatables()->of($giros)
             ->editColumn('tanggal', function ($giros) {
