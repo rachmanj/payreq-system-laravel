@@ -10,10 +10,16 @@
 
 @section('content')
 
-    {{-- ROW 1 --}}
+    {{-- ROW 1a --}}
     <div class="row">
         {{-- @include('accounting-dashboard.total-this-month-outs') --}}
         @include('accounting-dashboard.rekaps')
+    </div>
+    {{-- END ROW 1 --}}
+
+    {{-- ROW 1b --}}
+    <div class="row">
+        {{-- @include('accounting-dashboard.rekaps2') --}}
     </div>
     {{-- END ROW 1 --}}
 

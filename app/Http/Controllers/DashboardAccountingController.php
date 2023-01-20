@@ -38,7 +38,8 @@ class DashboardAccountingController extends Controller
             'activities_months' => $this->get_activities_months(),
             'activities_count' => $this->get_activities_count(),
             'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted(),
-            'accounts' => Account::all()
+            'accounts' => Account::all(),
+            'wait_payment' => Payreq::whereNull('outgoing_date')->get(),
         ]);
     }
 
@@ -193,21 +194,6 @@ class DashboardAccountingController extends Controller
             ->get();
     }
 
-    public function test2()
-    {
-        $activities_count = Activity::select(
-            "user_id",
-            DB::raw("(count(user_id)) as total_count"),
-            DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
-        )
-            ->orderBy('created_at')
-            ->whereYear('created_at', Carbon::now())
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m'), user_id"))
-            ->get();
-
-        return $activities_count;
-    }
-
     public function this_year_outgoings()
     {
         $year = Carbon::now()->format('Y');
@@ -249,6 +235,8 @@ class DashboardAccountingController extends Controller
 
     public function test()
     {
-        return $this->yearly_average_days()->where('year', Carbon::now()->subYear()->format('Y'))->first()->avg_days;
+        //WAIT PAYMENT
+        $wait_payment = Payreq::whereNull('outgoing_date')->sum('payreq_idr');
+        return $wait_payment;
     }
 }

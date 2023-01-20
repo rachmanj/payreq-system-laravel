@@ -48,11 +48,7 @@ class GiroDetailController extends Controller
             $transaksi->save();
 
             // UPDATE ACCOUNT BALANCE
-            if ($request->type == 'plus') {
-                $account->balance += $request->amount;
-            } else {
-                $account->balance -= $request->amount;
-            }
+            $account->balance += $request->amount;
             $account->save();
         }
 
