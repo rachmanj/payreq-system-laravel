@@ -15,7 +15,7 @@
     <div class="card">
       <div class="card-header">
 
-        @hasanyrole('superadmin|admin_accounting|cashier')
+        @hasanyrole('superadmin|admin|acc_cashier')
         <button href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create"><i class="fas fa-plus"></i> RAB</button>
         @endhasanyrole
       </div>  <!-- /.card-header -->
