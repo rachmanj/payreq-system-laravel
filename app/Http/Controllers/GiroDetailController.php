@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Giro;
 use App\Models\GiroDetail;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class GiroDetailController extends Controller
@@ -19,6 +21,8 @@ class GiroDetailController extends Controller
 
     public function store(Request $request, $giro_id)
     {
+        $giro = Giro::find($giro_id);
+
         $request->validate([
             'remarks' => 'required',
             'amount' => 'required',
@@ -31,7 +35,26 @@ class GiroDetailController extends Controller
             'is_cashin' => $request->is_cashin,
         ]);
 
-        $giro = Giro::find($giro_id);
+        if ($request->is_cashin == 1) {
+            //SAVE TO TRANSAKSI TABLE
+            $account = Account::where('account_no', '111111')->first();
+
+            $transaksi = new Transaksi();
+            $transaksi->posting_date = $giro->tanggal;
+            $transaksi->account_id = $account->id;
+            $transaksi->amount = $request->amount;
+            $transaksi->type = 'plus';
+            $transaksi->description = 'Penerimaan Giro ' . $giro->nomor;
+            $transaksi->save();
+
+            // UPDATE ACCOUNT BALANCE
+            if ($request->type == 'plus') {
+                $account->balance += $request->amount;
+            } else {
+                $account->balance -= $request->amount;
+            }
+            $account->save();
+        }
 
         // SAVE ACTIVITY
         $activityCtrl = app(ActivityController::class);
