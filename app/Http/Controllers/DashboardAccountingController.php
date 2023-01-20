@@ -17,7 +17,7 @@ class DashboardAccountingController extends Controller
     public function index()
     {
         $dnc_id = User::where('username', 'dncdiv')->first()->id;
-        $today = Carbon::now()->subHours(8);
+        $today = Carbon::now();
 
         return view('accounting-dashboard.index', [
             'today_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->whereDate('outgoing_date', $today),
