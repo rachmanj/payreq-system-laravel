@@ -39,7 +39,7 @@ class DashboardAccountingController extends Controller
             'activities_count' => $this->get_activities_count(),
             'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted(),
             'accounts' => Account::all(),
-            'wait_payment' => Payreq::whereNull('outgoing_date')->get(),
+            'wait_payment' => Payreq::whereNull('outgoing_date')->where('user_id', '<>', $dnc_id)->get(),
         ]);
     }
 
