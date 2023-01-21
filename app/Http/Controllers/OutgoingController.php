@@ -28,7 +28,7 @@ class OutgoingController extends Controller
         $payreq = Payreq::find($id);
 
         if ($request->account_id) {
-            $account = Account::where('account_no', $request->account_no)->first();
+            $account = Account::find($request->account_id);
             $account->balance = $account->balance - $payreq->payreq_idr;
         } else {
             if ($payreq->rab_id != null) {

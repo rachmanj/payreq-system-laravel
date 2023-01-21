@@ -18,8 +18,16 @@
           @csrf @method('PUT')
           <div class="modal-body">
             <div class="form-group">
-              <label for="account_no">Account No <small>(optional)</small></label>
-              <input type="text" name="account_no" class="form-control">
+              {{-- <label for="account_no">Account No <small>(optional)</small></label>
+              <input type="text" name="account_no" class="form-control"> --}}
+
+              <label for="account_id">Account No <small>(optional)</small></label>
+                <select name="account_id" id="account_id" class="form-control">
+                  <option value="">-- select account --</option>
+                  @foreach (\App\Models\Account::orderBy('account_no', 'asc')->get() as $account)
+                    <option value="{{ $account->id }}">{{ $account->account_no }}</option>
+                  @endforeach
+                </select>
             </div>
             <div class="form-group">
               <label for="outgoing_date">Outgoing Date <small>(biarkan kosong jika tanggal hari ini)</small></label>
