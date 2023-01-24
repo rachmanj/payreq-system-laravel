@@ -20,7 +20,7 @@ class DashboardAccountingController extends Controller
         $today = Carbon::now()->addHours(8);
 
         return view('accounting-dashboard.index', [
-            'today_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->whereDate('outgoing_date', $today),
+            'today_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->whereDate('outgoing_date', $today)->whereNull('rab_id'),
             'this_month_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->where('user_id', '<>', $dnc_id),
             'months' => $this->get_month(),
             'this_year_outgoings' => $this->this_year_outgoings(),
@@ -39,9 +39,16 @@ class DashboardAccountingController extends Controller
             'activities_count' => $this->get_activities_count(),
             'payreqs_not_budgeted' => $this->get_payreqs_not_budgeted(),
             'accounts' => Account::all(),
-            'wait_payment' => Payreq::whereNull('outgoing_date')->where('user_id', '<>', $dnc_id)->get(),
+            'wait_payment' => Payreq::whereNull('outgoing_date')->whereNull('rab_id')->get(),
+            //DNC
+            'dnc_wait_payment' => Payreq::whereNull('outgoing_date')->whereNotNull('rab_id')->get(),
+            'dnc_today_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->whereDate('outgoing_date', $today)->whereNotNull('rab_id'),
+            'dnc_yearly_average_days' => $this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first() ? number_format($this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first()->avg_days, 2) : '-',
         ]);
     }
+
+
+    // dnc_yearly_average_days
 
     public function get_month()
     {
@@ -231,6 +238,19 @@ class DashboardAccountingController extends Controller
         ];
 
         return $monthly;
+    }
+
+    public function dnc_yearly_average_days()
+    {
+        return Payreq::select(
+            DB::raw("AVG(DATEDIFF(verify_date, outgoing_date)) as avg_days"),
+            DB::raw("(DATE_FORMAT(outgoing_date, '%Y')) as year")
+        )
+            // ->whereYear('outgoing_date', Carbon::now()->subYear())
+            ->whereNotNull('verify_date')
+            ->whereNotNull('rab_id')
+            ->groupBy(DB::raw("DATE_FORMAT(outgoing_date, '%Y')"))
+            ->get();
     }
 
     public function test()
