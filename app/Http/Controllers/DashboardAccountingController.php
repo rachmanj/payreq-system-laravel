@@ -44,6 +44,8 @@ class DashboardAccountingController extends Controller
             'dnc_wait_payment' => Payreq::whereNull('outgoing_date')->whereNotNull('rab_id')->get(),
             'dnc_today_outgoings' => Payreq::whereYear('outgoing_date', $today)->whereMonth('outgoing_date', $today)->whereDate('outgoing_date', $today)->whereNotNull('rab_id'),
             'dnc_yearly_average_days' => $this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first() ? number_format($this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first()->avg_days, 2) : '-',
+            //CHART
+            'chart_outgoings' => $this->chart_outgoings(),
         ]);
     }
 
@@ -253,10 +255,20 @@ class DashboardAccountingController extends Controller
             ->get();
     }
 
-    public function test()
+    public function chart_outgoings()
     {
-        //WAIT PAYMENT
-        $wait_payment = Payreq::whereNull('outgoing_date')->sum('payreq_idr');
-        return $wait_payment;
+        $year = Carbon::now()->format('Y');
+
+        $monthNamesArray = Payreq::select(
+            DB::raw("(DATE_FORMAT(outgoing_date, '%m')) as month"),
+            DB::raw("(SUM(payreq_idr)) as amount")
+        )
+            ->whereYear('outgoing_date', $year)
+            ->whereNotNull('outgoing_date')
+            ->groupBy(DB::raw("DATE_FORMAT(outgoing_date, '%m')"))
+            ->orderBy('month', 'asc')
+            ->get();
+
+        return $monthNamesArray;
     }
 }
