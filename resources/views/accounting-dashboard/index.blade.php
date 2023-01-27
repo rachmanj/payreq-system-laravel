@@ -10,18 +10,29 @@
 
 @section('content')
 
-    {{-- ROW 1a --}}
+    {{-- ROW GENERAL --}}
     <div class="row">
         {{-- @include('accounting-dashboard.total-this-month-outs') --}}
         @include('accounting-dashboard.rekaps')
     </div>
-    {{-- END ROW 1 --}}
+    {{-- END GENERAL --}}
 
-    {{-- ROW 1b --}}
+    {{-- ROW DNC --}}
     <div class="row">
         @include('accounting-dashboard.rekaps_dnc')
     </div>
-    {{-- END ROW 1 --}}
+    {{-- END DNC --}}
+
+    {{-- ROW ACTIVITY-CHART --}}
+    <div class="row">
+      <div class="col-8">
+          @include('accounting-dashboard.chart-activity')
+      </div>
+      <div class="col-4">
+            @include('accounting-dashboard.not-budgeted')
+      </div>
+  </div>
+  {{-- END ROW ACTIVITY-CHART --}}
 
     {{-- ROW 2 --}}
     <div class="row">
@@ -37,7 +48,7 @@
             @include('accounting-dashboard.monthly-outgoing')
         </div>
         <div class="col-4">
-            @include('accounting-dashboard.not-budgeted')
+            {{-- @include('accounting-dashboard.not-budgeted') --}}
         </div>
     </div>
     {{-- END ROW 3 --}}
@@ -82,93 +93,6 @@
 </script>
 
  {{-- CHART SCRIPT --}}
-<script>
-$(function () {
-    'use strict'
-  
-    var ticksStyle = {
-      fontColor: '#495057',
-      fontStyle: 'bold'
-    }
-  
-    var mode = 'index'
-    var intersect = true
+ @include('accounting-dashboard.chart-script')
 
-    let outgoings = {!! json_encode($chart_outgoings) !!};
-    var bulans = outgoings.map(function(obj) {
-        return obj.month;
-    });
-    var monthNames = bulans.map(function(bulan) {
-        var date = new Date(`2000-${bulan}-01`);
-        return date.toLocaleString('default', { month: 'short' });
-    });
-    
-    var amounts = outgoings.map(function(obj) {
-        return obj.amount;
-    });
-
-    var $salesChart = $('#sales-chart')
-  // eslint-disable-next-line no-unused-vars
-  var salesChart = new Chart($salesChart, {
-    type: 'bar',
-    data: {
-      labels: monthNames,
-    //   labels: ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-      datasets: [
-        {
-          backgroundColor: '#007bff',
-          borderColor: '#007bff',
-          data: amounts
-        //   data: [1000, 2000, 3000, 2500, 2700, 2500, 3000, 2500, 1500, 2000, 2500, 3000]
-        },
-      ]
-    },
-    options: {
-      maintainAspectRatio: false,
-      tooltips: {
-        mode: mode,
-        intersect: intersect
-      },
-      hover: {
-        mode: mode,
-        intersect: intersect
-      },
-      legend: {
-        display: false
-      },
-      scales: {
-        yAxes: [{
-          // display: false,
-          gridLines: {
-            display: true,
-            lineWidth: '4px',
-            color: 'rgba(0, 0, 0, .2)',
-            zeroLineColor: 'transparent'
-          },
-          ticks: $.extend({
-            beginAtZero: true,
-
-            // Include a dollar sign in the ticks
-            callback: function (value) {
-              if (value >= 1000000) {
-                value /= 1000000
-                value += 'Jt'
-              }
-
-              return '' + value
-            }
-          }, ticksStyle)
-        }],
-        xAxes: [{
-          display: true,
-          gridLines: {
-            display: false
-          },
-          ticks: ticksStyle
-        }]
-      }
-    }
-  })
-})
-</script>
 @endsection

@@ -46,6 +46,7 @@ class DashboardAccountingController extends Controller
             'dnc_yearly_average_days' => $this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first() ? number_format($this->dnc_yearly_average_days()->where('year', Carbon::now()->format('Y'))->first()->avg_days, 2) : '-',
             //CHART
             'chart_outgoings' => $this->chart_outgoings(),
+            'chart_activites' => $this->chart_activites(),
         ]);
     }
 
@@ -270,5 +271,29 @@ class DashboardAccountingController extends Controller
             ->get();
 
         return $monthNamesArray;
+    }
+
+    public function chart_activites()
+    {
+        // personel activities by name
+        $activities = Activity::select(
+            'user_id',
+            DB::raw("(COUNT(*)) as total_count")
+        )
+            ->whereYear('created_at', Carbon::now())
+            ->groupBy(DB::raw("user_id"))
+            ->get();
+
+        //convert user_id to name
+        foreach ($activities as $activity) {
+            $activity->user_id = User::find($activity->user_id)->username;
+        }
+
+        return $activities;
+    }
+
+    public function test()
+    {
+        return $this->get_month();
     }
 }

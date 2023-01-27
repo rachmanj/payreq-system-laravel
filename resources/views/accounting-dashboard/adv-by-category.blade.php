@@ -10,7 +10,7 @@
                     <thead>
                         <tr>
                             <th></th>
-                            @foreach ($months as $month)
+                            @foreach ($department_months as $month)
                                 <th class="text-center">{{ date('M', strtotime('2022-' . $month->month . '-01')) }}</th>
                             @endforeach
                         </tr>
