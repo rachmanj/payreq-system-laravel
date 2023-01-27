@@ -76,6 +76,16 @@
             </div>
 
             <div class="form-group">
+              <label for="account_id">Account No.<small>(optional)</small></label>
+              <select name="account_id" class="form-control">
+                <option value="">-- select account --</option>
+                @foreach ($accounts as $account)
+                    <option value="{{ $account->id }}">{{ $account->name . ' - ' . $account->account_no }}</option>
+                @endforeach
+              </select>
+          </div>
+
+            <div class="form-group">
                 <label for="amount">Amount</label>
                 <input type="text" name="amount" id="amount" class="form-control @error('amount') is-invalid @enderror">
                 @error('amount')
@@ -85,13 +95,13 @@
                 @enderror
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="is_cashin">Is Cash-In</label>
                 <select name="is_cashin" id="is_cashin" class="form-control select2bs4">
                       <option value="0">No</option>
                       <option value="1">Yes</option>
                 </select>
-              </div>
+              </div> --}}
     
             </div> <!-- /.modal-body -->
             <div class="modal-footer float-left">

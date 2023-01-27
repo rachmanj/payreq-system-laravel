@@ -15,8 +15,9 @@ class GiroDetailController extends Controller
         $giro = Giro::find($giro_id);
         $giro_details = GiroDetail::where('giro_id', $giro_id)->get();
         $amount = $giro_details->sum('amount');
+        $accounts = Account::orderBy('account_no', 'asc')->get();
 
-        return view('giros.details.index', compact('giro', 'giro_details', 'amount'));
+        return view('giros.details.index', compact('giro', 'giro_details', 'amount', 'accounts'));
     }
 
     public function store(Request $request, $giro_id)
@@ -28,29 +29,34 @@ class GiroDetailController extends Controller
             'amount' => 'required',
         ]);
 
-        GiroDetail::create([
-            'giro_id' => $giro_id,
-            'remarks' => $request->remarks,
-            'amount' => $request->amount,
-            'is_cashin' => $request->is_cashin,
-        ]);
+        if ($request->account_id) {
+            // UPDATE ACCOUNT BALANCE
+            $account = Account::find($request->account_id);
+            $account->balance += $request->amount;
+            $account->save();
 
-        if ($request->is_cashin == 1) {
             //SAVE TO TRANSAKSI TABLE
-            $account = Account::where('account_no', '111111')->first();
-
             $transaksi = new Transaksi();
             $transaksi->posting_date = $giro->tanggal;
-            $transaksi->account_id = $account->id;
+            $transaksi->account_id = $request->account_id;
             $transaksi->amount = $request->amount;
             $transaksi->type = 'plus';
             $transaksi->description = 'Penerimaan Giro ' . $giro->nomor;
             $transaksi->save();
 
-            // UPDATE ACCOUNT BALANCE
-            $account->balance += $request->amount;
-            $account->save();
+            $is_cashin = 1;
+        } else {
+            $is_cashin = 0;
         }
+
+        // SAVE TO GIRO DETAIL TABLE
+        $giro_detail = new GiroDetail();
+        $giro_detail->giro_id = $giro_id;
+        $giro_detail->remarks = $request->remarks;
+        $giro_detail->account_id = $request->account_id;
+        $giro_detail->amount = $request->amount;
+        $giro_detail->is_cashin = $is_cashin;
+        $giro_detail->save();
 
         // SAVE ACTIVITY
         $activityCtrl = app(ActivityController::class);
