@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GiroDetailController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OutgoingController;
 use App\Http\Controllers\PermissionController;
@@ -50,11 +51,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 
+    // USER DASHBOARD
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardUserController::class, 'index'])->name('index');
         Route::get('/{id}', [DashboardUserController::class, 'show'])->name('show');
     });
 
+    //APROVAL
     Route::prefix('approved')->name('approved.')->group(function () {
         Route::get('/data', [ApprovedController::class, 'data'])->name('data');
         Route::get('/all', [ApprovedController::class, 'all'])->name('all');
@@ -62,13 +65,14 @@ Route::middleware('auth')->group(function () {
     });
     Route::resource('approved', ApprovedController::class);
 
-
+    // REALIZATION
     Route::prefix('realization')->name('realization.')->group(function () {
         Route::get('/data', [RealizationController::class, 'data'])->name('data');
         Route::get('/', [RealizationController::class, 'index'])->name('index');
         Route::put('/{id}', [RealizationController::class, 'update'])->name('update');
     });
 
+    // OUTGOING
     Route::prefix('outgoing')->name('outgoing.')->group(function () {
         Route::get('/data', [OutgoingController::class, 'data'])->name('data');
         Route::get('/', [OutgoingController::class, 'index'])->name('index');
@@ -78,12 +82,14 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}/auto', [OutgoingController::class, 'auto_update'])->name('auto_update');
     });
 
+    // VERIFICATION
     Route::prefix('verify')->name('verify.')->group(function () {
         Route::get('/data', [VerifyController::class, 'data'])->name('data');
         Route::get('/', [VerifyController::class, 'index'])->name('index');
         Route::put('/{id}', [VerifyController::class, 'update'])->name('update');
     });
 
+    // SEARCH
     Route::prefix('search')->name('search.')->group(function () {
         Route::get('/', [SearchController::class, 'index'])->name('index');
         Route::post('/display', [SearchController::class, 'display'])->name('display');
@@ -92,21 +98,25 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [SearchController::class, 'destroy'])->name('destroy');
     });
 
+    //RAB
     Route::prefix('rabs')->name('rabs.')->group(function () {
         Route::get('/data', [RabController::class, 'data'])->name('data');
         Route::get('/{rab_id}/data', [RabController::class, 'payreq_data'])->name('payreq_data');
     });
     Route::resource('rabs', RabController::class);
 
+    // TRANSAKSIS
     Route::get('transaksi/data', [TransaksiController::class, 'data'])->name('transaksi.data');
     Route::resource('transaksi', TransaksiController::class);
 
+    // ACCOUNT
     Route::prefix('account')->name('account.')->group(function () {
         Route::get('/data', [AccountController::class, 'data'])->name('data');
         Route::post('/transaksi-store', [AccountController::class, 'transaksi_store'])->name('transaksi_store');
     });
     Route::resource('account', AccountController::class);
 
+    // REKAPS
     Route::prefix('rekaps')->name('rekaps.')->group(function () {
         Route::get('/data', [RekapController::class, 'data'])->name('data');
         Route::get('/', [RekapController::class, 'index'])->name('index');
@@ -114,6 +124,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/export', [RekapController::class, 'export'])->name('export');
     });
 
+    // BUDGET
     Route::prefix('budget')->name('budget.')->group(function () {
         Route::get('/', [BudgetController::class, 'index'])->name('index');
         Route::get('/just_updated', [BudgetController::class, 'just_updated'])->name('just_updated');
@@ -122,25 +133,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/just_updated/data', [BudgetController::class, 'just_updated_data'])->name('just_updated_data');
     });
 
+    // ADVANCE CATEGORY
     Route::get('adv-category/data', [AdvanceCategoryController::class, 'data'])->name('adv-category.data');
     Route::resource('adv-category', AdvanceCategoryController::class);
 
+    // ACC-DASHBOARD
     Route::prefix('acc-dashboard')->name('acc-dashboard.')->group(function () {
         Route::get('/', [DashboardAccountingController::class, 'index'])->name('index');
         Route::get('test', [DashboardAccountingController::class, 'test'])->name('test');
     });
 
+    // DNC-DASHBOARD
     Route::prefix('dnc-dashboard')->name('dnc-dashboard.')->group(function () {
         Route::get('/', [DashboardDncController::class, 'index'])->name('index');
         Route::get('test', [DashboardDncController::class, 'test'])->name('test');
     });
 
+    //EMAILS
     Route::prefix('emails')->name('emails.')->group(function () {
         Route::get('/data', [EmailController::class, 'data'])->name('data');
         Route::get('/', [EmailController::class, 'index'])->name('index');
         Route::get('/push/{id}', [EmailController::class, 'push'])->name('push');
     });
 
+    //GIROS
     Route::prefix('giros')->name('giros.')->group(function () {
         Route::get('/data', [GiroController::class, 'data'])->name('data');
         Route::get('/{giro_id}/data', [GiroDetailController::class, 'data'])->name('detail.data');
@@ -149,4 +165,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{giro_detail_id}/destroy', [GiroDetailController::class, 'destroy'])->name('detail.destroy');
     });
     Route::resource('giros', GiroController::class);
+
+    // INVOICES
+    Route::prefix('invoices')->name('invoices.')->group(function () {
+        Route::get('/data', [InvoiceController::class, 'data'])->name('data');
+        Route::get('/paid_data', [InvoiceController::class, 'paid_data'])->name('paid_data');
+        Route::put('/{id}/paid', [InvoiceController::class, 'paid'])->name('paid');
+        Route::get('/paid-index', [InvoiceController::class, 'paid_index'])->name('paid.index');
+    });
+    Route::resource('invoices', InvoiceController::class);
 });

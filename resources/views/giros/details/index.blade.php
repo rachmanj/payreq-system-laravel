@@ -83,7 +83,7 @@
                     <option value="{{ $account->id }}">{{ $account->name . ' - ' . $account->account_no }}</option>
                 @endforeach
               </select>
-          </div>
+            </div>
 
             <div class="form-group">
                 <label for="amount">Amount</label>
