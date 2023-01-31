@@ -9,7 +9,6 @@
                   <div class="description-block border-right">
                     <span class="description-text">PC Balance</span>
                     <h4 class="description-header">Rp.{{ number_format($accounts->where('account_no', '111111')->first()->balance) }}</h4>
-                    {{-- <h5 class="description-header">Rp.{{ number_format($accounts->where('account_no', '111115')->first()->balance) }} <small>(DNC)</small></h5> --}}
                   </div>
                   <!-- /.description-block -->
                 </div>
@@ -17,8 +16,8 @@
                 <div class="col-sm-3 col-6">
                   <div class="description-block border-right">
                     <span class="description-text">Wait Payment</span>
-                      <h5 class="description-header">Rp.{{ number_format($wait_payment->sum('payreq_idr'), 0) }}</h5>
-                      <span class="description-percentage">{{ number_format($wait_payment->count(), 0) }} payreqs</span>
+                      <h5 class="description-header">Rp.{{ $wait_payment ? number_format($wait_payment->sum('payreq_idr'), 0) . ' (' . number_format($wait_payment->count(), 0) . ' payreqs)' : '-' }}</h5>
+                      <h5 class="description-header">Rp.{{ $wait_payment_invoices ? number_format($wait_payment_invoices->sum('amount'), 0) . ' (' . number_format($wait_payment_invoices->count(), 0) . ' invoices)' : '-' }}</h5>
                   </div>
                   <!-- /.description-block -->
                 </div>

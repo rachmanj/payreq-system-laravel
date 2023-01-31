@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Activity;
 use App\Models\AdvanceCategory;
 use App\Models\Department;
+use App\Models\Invoice;
 use App\Models\Payreq;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -47,6 +48,8 @@ class DashboardAccountingController extends Controller
             //CHART
             'chart_outgoings' => $this->chart_outgoings(),
             'chart_activites' => $this->chart_activites(),
+            //Invoices wait payment
+            'wait_payment_invoices' => Invoice::whereNull('payment_date'),
         ]);
     }
 
