@@ -32,6 +32,14 @@ class InvoiceController extends Controller
         $invoice->payment_date = $payment_date;
         $invoice->save();
 
+        // UPDATE REMOTE DB
+        $client = new \GuzzleHttp\Client();
+        $client->request('PUT', 'http://192.168.33.18:8080/irr-support/api/invoices/' . $invoice->invoice_irr_id, [
+            'form_params' => [
+                'payment_date' => $payment_date,
+            ]
+        ]);
+
         // UPDATE ACCOUNT BALANCE
         $account = Account::find($request->account_id);
         $account->balance -= $invoice->amount;
@@ -40,15 +48,6 @@ class InvoiceController extends Controller
         // SAVE ACTIVITY
         $activityCtrl = app(ActivityController::class);
         $activityCtrl->store(auth()->user()->id, 'Payment Invoice ', $invoice->nomor_invoice);
-
-        // // update remote db
-        // $client = new \GuzzleHttp\Client();
-        // $response = $client->request('POST', 'http://localhost:8000/api/invoices/paid', [
-        //     'form_params' => [
-        //         'id' => $invoice->id,
-        //         'payment_date' => $payment_date,
-        //     ]
-        // ]);
 
         return redirect()->route('invoices.index')->with('success', 'Invoice has been updated');
     }
