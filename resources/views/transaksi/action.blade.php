@@ -1,4 +1,4 @@
-@hasanyrole('superadmin')
+@hasanyrole('superadmin|admin|acc_cashier')
 <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#transaksi-destroy-{{ $model->id }}">delete</button>
 @endhasanyrole
 
