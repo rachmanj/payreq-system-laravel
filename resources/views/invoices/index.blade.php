@@ -20,16 +20,18 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-        <table id="payreqs" class="table table-bordered table-striped">
+        <table id="invoices" class="table table-bordered table-striped">
           <thead>
           <tr>
             <th>#</th>
             <th>No.</th>
             <th>Vendor</th>
-            <th>Received</th>
+            <th>ARD</th> {{-- Accounting Received Date  --}}
+            <th>CRD</th> {{-- Cashier Received Date  --}}
             <th>Amount</th>
             <th>Origin</th>
             <th>Days</th>
+            <th>Sender</th>
             <th></th>
           </tr>
           </thead>
@@ -68,7 +70,7 @@
 
 <script>
   $(function () {
-    $("#payreqs").DataTable({
+    $("#invoices").DataTable({
       processing: true,
       serverSide: true,
       ajax: '{{ route('invoices.data') }}',
@@ -77,15 +79,17 @@
         {data: 'nomor_invoice'},
         {data: 'vendor_name'},
         {data: 'received_date'},
+        {data: 'created_at'},
         {data: 'amount'},
         {data: 'origin'},
         {data: 'days'},
+        {data: 'sender_name'},
         {data: 'action', orderable: false, searchable: false},
       ],
       fixedHeader: true,
       columnDefs: [
               {
-                "targets": [4, 6],
+                "targets": [5, 7],
                 "className": "text-right"
               },
             ]

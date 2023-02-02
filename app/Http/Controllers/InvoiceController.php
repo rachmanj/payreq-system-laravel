@@ -31,10 +31,12 @@ class InvoiceController extends Controller
         // update local db
         $invoice->payment_date = $payment_date;
         $invoice->save();
+        $url = 'http://192.168.33.18:8080/irr-support/api/invoices/';
+        // $url = 'http://localhost:8000/api/invoices/';
 
         // UPDATE REMOTE DB
         $client = new \GuzzleHttp\Client();
-        $client->request('PUT', 'http://192.168.33.18:8080/irr-support/api/invoices/' . $invoice->invoice_irr_id, [
+        $client->request('PUT', $url . $invoice->invoice_irr_id, [
             'form_params' => [
                 'payment_date' => $payment_date,
             ]
@@ -60,8 +62,11 @@ class InvoiceController extends Controller
             ->editColumn('received_date', function ($invoices) {
                 return $invoices->received_date ? date('d-M-Y', strtotime($invoices->received_date)) : '-';
             })
+            ->editColumn('created_at', function ($invoices) {
+                return $invoices->created_at ? date('d-M-Y', strtotime($invoices->created_at)) : '-';
+            })
             ->editColumn('amount', function ($invoices) {
-                return number_format($invoices->amount, 2);
+                return number_format($invoices->amount, 0);
             })
             ->addColumn('days', function ($invoices) {
                 $received_date = new \DateTime($invoices->received_date);
@@ -81,8 +86,8 @@ class InvoiceController extends Controller
         $invoices = Invoice::whereNotNull('payment_date')->orderBy('payment_date', 'desc')->get();
 
         return datatables()->of($invoices)
-            ->editColumn('received_date', function ($invoices) {
-                return $invoices->received_date ? date('d-M-Y', strtotime($invoices->received_date)) : '-';
+            ->editColumn('created_at', function ($invoices) {
+                return $invoices->created_at ? date('d-M-Y', strtotime($invoices->created_at)) : '-';
             })
             ->editColumn('payment_date', function ($invoices) {
                 return $invoices->payment_date ? date('d-M-Y', strtotime($invoices->payment_date)) : '-';
@@ -92,7 +97,7 @@ class InvoiceController extends Controller
             })
             // diff days
             ->addColumn('days', function ($invoices) {
-                $received_date = new \DateTime($invoices->received_date);
+                $received_date = new \DateTime($invoices->created_at);
                 $payment_date = new \DateTime($invoices->payment_date);
                 $diff_days = $received_date->diff($payment_date)->format('%a');
 

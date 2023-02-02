@@ -17,7 +17,6 @@ class InvoiceApiController extends Controller
             'vendor_name' => 'required',
             'received_date' => 'required',
             'amount' => 'required',
-            'remarks' => 'required',
         ];
 
         // CREATE VALIDATOR INSTANCE
@@ -38,8 +37,9 @@ class InvoiceApiController extends Controller
             'vendor_name' => $request->vendor_name,
             'received_date' => $request->received_date,
             'amount' => $request->amount,
-            'origin' => 'IRR-System',
+            'origin' => 'IRR',
             'remarks' => $request->remarks,
+            'sender_name' => $request->sender_name,
         ]);
 
         // RETURN RESPONSE

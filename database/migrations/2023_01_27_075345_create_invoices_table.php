@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nomor_invoice')->nullable();
             $table->integer('invoice_irr_id')->nullable();
             $table->string('vendor_name')->nullable();
-            $table->date('received_date')->nullable();
+            $table->date('received_date')->nullable(); // invoice diterima oleh Accounting invoicer
             $table->string('payment_date')->nullable();
             $table->double('amount')->nullable();
             $table->string('origin')->nullable();
