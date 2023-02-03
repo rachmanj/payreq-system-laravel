@@ -26,11 +26,11 @@
             <th>#</th>
             <th>No.</th>
             <th>Vendor</th>
-            <th>ARD</th> {{-- Accounting Received Date  --}}
-            <th>CRD</th> {{-- Cashier Received Date  --}}
+            <th>ARD | Days</th> {{-- Accounting Received Date  --}}
+            <th>CRD | Days</th> {{-- Cashier Received Date  --}}
             <th>Amount</th>
             <th>Origin</th>
-            <th>Days</th>
+            {{-- <th>Days</th> --}}
             <th>Sender</th>
             <th></th>
           </tr>
@@ -82,15 +82,19 @@
         {data: 'created_at'},
         {data: 'amount'},
         {data: 'origin'},
-        {data: 'days'},
+        // {data: 'days'},
         {data: 'sender_name'},
         {data: 'action', orderable: false, searchable: false},
       ],
       fixedHeader: true,
       columnDefs: [
               {
-                "targets": [5, 7],
+                "targets": [5],
                 "className": "text-right"
+              },
+              {
+                "targets": [3,4],
+                "className": "text-center"
               },
             ]
     })

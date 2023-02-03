@@ -60,10 +60,18 @@ class InvoiceController extends Controller
 
         return datatables()->of($invoices)
             ->editColumn('received_date', function ($invoices) {
-                return $invoices->received_date ? date('d-M-Y', strtotime($invoices->received_date)) : '-';
+                $received_date = new \DateTime($invoices->received_date);
+                $today = new \DateTime(now()->addHours(8));
+                $diff_days = $received_date->diff($today)->format('%a');
+
+                return $invoices->received_date ? date('d-m-Y', strtotime($invoices->received_date)) . ' | ' . $diff_days : '-';
             })
             ->editColumn('created_at', function ($invoices) {
-                return $invoices->created_at ? date('d-M-Y', strtotime($invoices->created_at)) : '-';
+                $created_at = new \DateTime($invoices->created_at);
+                $today = new \DateTime(now()->addHours(8));
+                $diff_days = $created_at->diff($today)->format('%a');
+
+                return $invoices->created_at ? date('d-m-Y', strtotime($invoices->created_at)) . ' | ' . $diff_days : '-';
             })
             ->editColumn('amount', function ($invoices) {
                 return number_format($invoices->amount, 0);
@@ -87,10 +95,10 @@ class InvoiceController extends Controller
 
         return datatables()->of($invoices)
             ->editColumn('created_at', function ($invoices) {
-                return $invoices->created_at ? date('d-M-Y', strtotime($invoices->created_at)) : '-';
+                return $invoices->created_at ? date('d-m-Y', strtotime($invoices->created_at)) : '-';
             })
             ->editColumn('payment_date', function ($invoices) {
-                return $invoices->payment_date ? date('d-M-Y', strtotime($invoices->payment_date)) : '-';
+                return $invoices->payment_date ? date('d-m-Y', strtotime($invoices->payment_date)) : '-';
             })
             ->editColumn('amount', function ($invoices) {
                 return number_format($invoices->amount, 2);
