@@ -56,7 +56,10 @@ class InvoiceController extends Controller
 
     public function data()
     {
-        $invoices = Invoice::whereNull('payment_date')->orderBy('received_date', 'desc')->get();
+        $invoices = Invoice::whereNull('payment_date')
+            ->orderBy('received_date', 'asc')
+            ->orderBy('created_at', 'asc')
+            ->get();
 
         return datatables()->of($invoices)
             ->editColumn('received_date', function ($invoices) {
