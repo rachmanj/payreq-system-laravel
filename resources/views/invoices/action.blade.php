@@ -19,6 +19,7 @@
             <div class="form-group">
               <label for="account_id">Account No.</label>
               <select name="account_id" class="form-control">
+                  <option value="">-- not PC transaction --</option>
                 @foreach (\App\Models\Account::orderBy('account_no', 'asc')->get() as $account)
                     <option value="{{ $account->id }}">{{ $account->account_no . ' - ' . $account->name }}</option>
                   @endforeach

@@ -42,10 +42,12 @@ class InvoiceController extends Controller
             ]
         ]);
 
-        // UPDATE ACCOUNT BALANCE
-        $account = Account::find($request->account_id);
-        $account->balance -= $invoice->amount;
-        $account->save();
+        if ($request->account_id) {
+            // UPDATE ACCOUNT BALANCE
+            $account = Account::find($request->account_id);
+            $account->balance -= $invoice->amount;
+            $account->save();
+        }
 
         // SAVE ACTIVITY
         $activityCtrl = app(ActivityController::class);
