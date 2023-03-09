@@ -10,7 +10,12 @@ class InvoiceController extends Controller
 {
     public function index()
     {
-        return view('invoices.index');
+        $invoices = Invoice::whereNull('payment_date')
+            ->orderBy('received_date', 'asc')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('invoices.index', compact('invoices'));
     }
 
     public function paid_index()
@@ -31,10 +36,12 @@ class InvoiceController extends Controller
         // update local db
         $invoice->payment_date = $payment_date;
         $invoice->save();
+
+
+        // UPDATE REMOTE DB
         $url = 'http://192.168.33.18:8080/irr-support/api/invoices/';
         // $url = 'http://localhost:8000/api/invoices/';
 
-        // UPDATE REMOTE DB
         $client = new \GuzzleHttp\Client();
         $client->request('PUT', $url . $invoice->invoice_irr_id, [
             'form_params' => [
@@ -52,6 +59,40 @@ class InvoiceController extends Controller
         // SAVE ACTIVITY
         $activityCtrl = app(ActivityController::class);
         $activityCtrl->store(auth()->user()->id, 'Payment Invoice ', $invoice->nomor_invoice);
+
+        return redirect()->route('invoices.index')->with('success', 'Invoice has been updated');
+    }
+
+    public function multi_paid(Request $request)
+    {
+        $invoices = Invoice::whereIn('id', $request->invoices)->get();
+
+        foreach ($invoices as $invoice) {
+            // update local db
+            $invoice->payment_date = $request->payment_date;
+            $invoice->save();
+
+            // UPDATE REMOTE DB
+            $url = 'http://192.168.33.18:8080/irr-support/api/invoices/';
+            // $url = 'http://localhost:5000/api/invoices/';
+            $client = new \GuzzleHttp\Client();
+            $client->request('PUT', $url . $invoice->invoice_irr_id, [
+                'form_params' => [
+                    'payment_date' => $request->payment_date,
+                ]
+            ]);
+
+            if ($request->account_id) {
+                // UPDATE ACCOUNT BALANCE
+                $account = Account::find($request->account_id);
+                $account->balance -= $invoice->amount;
+                $account->save();
+            }
+
+            // SAVE ACTIVITY 
+            $activityCtrl = app(ActivityController::class);
+            $activityCtrl->store(auth()->user()->id, 'Payment Invoice ', $invoice->nomor_invoice);
+        }
 
         return redirect()->route('invoices.index')->with('success', 'Invoice has been updated');
     }

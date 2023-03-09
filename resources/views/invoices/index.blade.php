@@ -14,6 +14,7 @@
 
     <div class="card">
       <div class="card-header">
+        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#multi-payment">Multi Payment</button>
         <a href="{{ route('invoices.paid.index') }}" class="float-right mx-2">Paid</a>
         <a href="#" class="float-right"><b>Wait Payment | </b></a>
         {{-- <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Invoice</a> --}}
@@ -44,6 +45,54 @@
   <!-- /.col -->
 </div>
 <!-- /.row -->
+
+<div class="modal fade" id="multi-payment">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Multi Payment Invoices</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('invoices.multi_paid') }}" method="POST">
+        @csrf @method('POST')
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="payment_date">Payment Date</label>
+            <input type="date" name="payment_date" id="payment_date" class="form-control" value="{{ date('Y-m-d') }}">
+          </div>
+          <div class="form-group">
+            <label for="account_id">Account No.</label>
+            <select name="account_id" class="form-control">
+                <option value="">-- not PC transaction --</option>
+              @foreach (\App\Models\Account::orderBy('account_no', 'asc')->get() as $account)
+                <option value="{{ $account->id }}">{{ $account->account_no . ' - ' . $account->name }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pilih Invoices yang akan di Payment</label>
+            <div class="select2-purple">
+              <select name="invoices[]" class="select2 form-control" multiple="multiple" data-dropdown-css-class="select2-purple" data-placeholder="Select Invoices" style="width: 100%;">
+                @foreach ($invoices as $item)
+                  <option value="{{ $item->id }}">{{ $item->vendor_name . ' | ' . $item->nomor_invoice }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 @endsection
 
@@ -102,6 +151,9 @@
 </script>
 <script>
   $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
     //Initialize Select2 Elements
     $('.select2bs4').select2({
       theme: 'bootstrap4'

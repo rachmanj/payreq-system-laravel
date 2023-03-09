@@ -172,6 +172,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/paid_data', [InvoiceController::class, 'paid_data'])->name('paid_data');
         Route::put('/{id}/paid', [InvoiceController::class, 'paid'])->name('paid');
         Route::get('/paid-index', [InvoiceController::class, 'paid_index'])->name('paid.index');
+        Route::post('/multi-paid', [InvoiceController::class, 'multi_paid'])->name('multi_paid');
     });
     Route::resource('invoices', InvoiceController::class);
 });
