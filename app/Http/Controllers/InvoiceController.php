@@ -11,8 +11,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoices = Invoice::whereNull('payment_date')
-            ->orderBy('received_date', 'asc')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('vendor_name', 'asc')
             ->get();
 
         return view('invoices.index', compact('invoices'));
