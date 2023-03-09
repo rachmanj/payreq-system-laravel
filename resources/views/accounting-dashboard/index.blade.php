@@ -61,6 +61,14 @@
     </div>
     {{-- END ROW 5 CHART --}}
 
+    {{-- LINE CHART OUTGOING BY CATEGORY
+    <div class="row">
+        <div class="col-12">
+            @include('accounting-dashboard.chart-outgoing-by-category')
+        </div>
+    </div>
+     END LINE CHART OUTGOING BY CATEGORY --}}
+
     {{-- ROW 4 --}}
     <div class="row">
         <div class="col-12">

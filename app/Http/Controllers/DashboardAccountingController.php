@@ -50,6 +50,8 @@ class DashboardAccountingController extends Controller
             'chart_activites' => $this->chart_activites(),
             //Invoices wait payment
             'wait_payment_invoices' => Invoice::whereNull('payment_date'),
+            // chart advance by category
+            'chart_advance_by_category' => $this->chart_advance_by_categories(),
         ]);
     }
 
@@ -295,8 +297,34 @@ class DashboardAccountingController extends Controller
         return $activities;
     }
 
-    public function test()
+    public function chart_advance_by_categories()
     {
-        return $this->get_month();
+        // sum amount of payreqs by categories by month
+        $payreqs = Payreq::select(
+            DB::raw("advance_category_id as category"),
+            DB::raw("(DATE_FORMAT(outgoing_date, '%m')) as month"),
+            DB::raw("(SUM(payreq_idr)) as amount"),
+        )
+            ->whereYear('outgoing_date', Carbon::now())
+            ->whereNotNull('outgoing_date')
+            ->groupBy("advance_category_id")
+            ->groupBy(DB::raw("DATE_FORMAT(outgoing_date, '%m')"))
+            ->get();
+
+        // convert month number to month name
+        foreach ($payreqs as $payreq) {
+            $payreq->month = Carbon::createFromDate(null, $payreq->month)->format('F');
+        }
+
+        // convert category id to category code
+        foreach ($payreqs as $payreq) {
+            if ($payreq->category == 0) {
+                $payreq->category = 'Others';
+            } else {
+                $payreq->category = AdvanceCategory::find($payreq->category)->code;
+            }
+        }
+
+        return $payreqs;
     }
 }
