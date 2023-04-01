@@ -11,9 +11,15 @@ class Rab extends Model
 
     protected $guarded = [];
 
+    /*
     public function payreqs()
     {
         return $this->hasMany(Payreq::class, 'rab_id', 'id');
+    } */
+
+    public function payreqs()
+    {
+        return $this->hasMany(Payreq::class, 'payreq_rab');
     }
 
     public function advance()

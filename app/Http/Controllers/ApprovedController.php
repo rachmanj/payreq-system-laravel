@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\AdvanceCategory;
+use App\Models\GeneralRab;
 use App\Models\Payreq;
 use App\Models\Rab;
 use App\Models\User;
@@ -19,8 +20,13 @@ class ApprovedController extends Controller
     public function create()
     {
         $employees = User::where('is_active', 1)->orderBy('name', 'asc')->get();
-        $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
         $adv_categories = AdvanceCategory::orderBy('code', 'asc')->get();
+
+        if (auth()->user()->department->akronim === "DNC") {
+            $rabs = Rab::where('status', 'progress')->orderBy('rab_no', 'asc')->get();
+        } else {
+            $rabs = GeneralRab::where('status', 'approved')->orderBy('rab_no', 'asc')->get();
+        }
 
         return view('approved.create', compact('employees', 'rabs', 'adv_categories'));
     }
@@ -39,6 +45,7 @@ class ApprovedController extends Controller
             $approve_date = date('Y-m-d');
         }
 
+        // SAVE NEW PAYREQ
         $payreq = new Payreq();
         $payreq->user_id = $request->employee_id;
         $payreq->payreq_num = $request->payreq_num;
@@ -53,9 +60,19 @@ class ApprovedController extends Controller
         $payreq->budgeted = $request->budgeted;
         $payreq->save();
 
+        // SAVE RAB IF EXISTS
+        if ($request->rab_id) {
+            if (auth()->user()->department->akronim <> "DNC") {
+                $rab = GeneralRab::find($request->rab_id);
+                $rab->payreqs()->attach($payreq->id);
+            } else {
+                $rab = Rab::find($request->rab_id);
+                $rab->payreqs()->attach($payreq->id);
+            }
+        }
+
         // SAVE ACTIVITY
-        $activityCtrl = app(ActivityController::class);
-        $activityCtrl->store(auth()->user()->id, 'Approve PR', $request->payreq_num);
+        app(ActivityController::class)->store(auth()->user()->id, 'Approve PR', $request->payreq_num);
 
         return redirect()->route('approved.index')->with('success', 'Payment Request created');
     }

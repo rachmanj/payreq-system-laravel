@@ -26,6 +26,8 @@
           @include('templates.partials.menu.dnc')
           @endhasanyrole
 
+          @include('templates.partials.menu.genrab')
+
           @can('akses_admin')
             @include('templates.partials.menu.admin')
           @endcan
@@ -41,17 +43,18 @@
   
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-        <li class="nav-item">
-          <a href="#" class="nav-link">{{ auth()->user()->name }}</a>
-        </li>
-        <li class="nav-item">
-          <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="nav-link text-dark">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-          </form>
-        </li>
+
+        <li class="nav-item dropdown">
+          <a id="dropdownPayreq" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ auth()->user()->name }}</a>
+          <ul aria-labelledby="dropdownPayreq" class="dropdown-menu border-0 shadow">
+            <li>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+              </form>
+              <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            </li>
+          </ul>
+      </li>
       </ul>
     </div>
   </nav>

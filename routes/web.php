@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardAccountingController;
 use App\Http\Controllers\DashboardDncController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\GeneralRabController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GiroDetailController;
 use App\Http\Controllers\InvoiceController;
@@ -175,4 +176,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/multi-paid', [InvoiceController::class, 'multi_paid'])->name('multi_paid');
     });
     Route::resource('invoices', InvoiceController::class);
+
+    //GENRAB -> General RAB
+    Route::prefix('genrab')->name('genrab.')->group(function () {
+        Route::get('/data', [GeneralRabController::class, 'data'])->name('data');
+        Route::get('/dashboard', [GeneralRabController::class, 'dashboard'])->name('dashboard');
+    });
+    Route::resource('genrab', GeneralRabController::class);
 });
